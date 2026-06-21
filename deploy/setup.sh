@@ -5,13 +5,14 @@
 set -euo pipefail
 
 CHAIN_ID="${CHAIN_ID:-mehr-1}"
-MONIKER="${MONIKER:-node-0}"
+MONIKER="${MONIKER:-edge-3}"
+DOMAIN="${DOMAIN:-edge-3.mehrfunds.com}"
 NODE_HOME="/var/lib/mehrd"
 BINARY_URL="${BINARY_URL:-}"   # set to download URL, or leave empty to copy local ./mehrd
 
 # ── 1. System deps ─────────────────────────────────────────────────────────────
 apt-get update -qq
-apt-get install -y -qq curl wget jq nginx certbot python3-certbot-nginx ufw
+apt-get install -y -qq curl wget jq nginx ufw
 
 # ── 2. Create dedicated user ───────────────────────────────────────────────────
 if ! id -u mehrd &>/dev/null; then
@@ -51,18 +52,15 @@ systemctl daemon-reload
 systemctl enable mehrd
 
 # ── 7. Firewall ────────────────────────────────────────────────────────────────
-ufw allow 22/tcp   # SSH
-ufw allow 80/tcp   # HTTP (certbot)
-ufw allow 443/tcp  # HTTPS REST
-ufw allow 9090/tcp # gRPC
+ufw allow 22/tcp    # SSH
+ufw allow 2083/tcp  # mehrd REST API (Cloudflare proxy → origin)
 ufw allow 26656/tcp # P2P
 ufw --force enable
 
 # ── 8. nginx ───────────────────────────────────────────────────────────────────
-DOMAIN="${DOMAIN:-edge-0.mehrfunds.com}"
-sed "s/edge-0.mehrfunds.com/$DOMAIN/g" "$(dirname "$0")/nginx-node.conf" \
-  > "/etc/nginx/sites-available/$DOMAIN"
-ln -sf "/etc/nginx/sites-available/$DOMAIN" "/etc/nginx/sites-enabled/$DOMAIN"
+cp "$(dirname "$0")/nginx-node.conf" "/etc/nginx/sites-available/mehrd"
+ln -sf "/etc/nginx/sites-available/mehrd" "/etc/nginx/sites-enabled/mehrd"
+rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 
 echo ""
@@ -70,7 +68,7 @@ echo "┌───────────────────────�
 echo "│  mehrd installed. Next steps:                        │"
 echo "│  1. Copy genesis.json to $NODE_HOME/config/          │"
 echo "│  2. Add persistent peers to config.toml              │"
-echo "│  3. Run: certbot --nginx -d $DOMAIN                  │"
-echo "│  4. Run: systemctl start mehrd                       │"
-echo "│  5. Tail logs: journalctl -u mehrd -f                │"
+echo "│  3. systemctl start mehrd                            │"
+echo "│  4. journalctl -u mehrd -f                           │"
+echo "│  REST API → https://$DOMAIN:2083 (via Cloudflare)   │"
 echo "└──────────────────────────────────────────────────────┘"

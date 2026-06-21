@@ -49,7 +49,9 @@ func (AppModule) Name() string { return types.ModuleName }
 
 func (AppModule) RegisterLegacyAminoCodec(*codec.LegacyAmino) {}
 
-func (AppModule) RegisterInterfaces(codectypes.InterfaceRegistry) {}
+func (AppModule) RegisterInterfaces(registry codectypes.InterfaceRegistry) {
+	types.RegisterInterfaces(registry)
+}
 
 func (AppModule) DefaultGenesis(_ codec.JSONCodec) json.RawMessage {
 	gs := &types.GenesisState{Watches: []*types.Watch{}, Webhooks: []*types.Webhook{}}
