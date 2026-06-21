@@ -1,0 +1,20 @@
+version: 1
+validation: sovereign
+default_denom: umehr
+accounts:
+- name: alice
+  coins:
+  - 10000000000umehr   # 10,000 MEHR
+- name: bob
+  coins:
+  - 5000000000umehr    # 5,000 MEHR
+client:
+  openapi:
+    path: docs/static/openapi.json
+faucet:
+  name: bob
+  coins:
+  - 1000000umehr       # 1 MEHR per faucet request
+validators:
+- name: alice
+  bonded: 5000000000umehr   # 5,000 MEHR bonded

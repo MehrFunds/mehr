@@ -1,0 +1,27 @@
+syntax = "proto3";
+package mehr.v1;
+
+option go_package = "github.com/mehrfunds/node/x/mehr/types";
+
+// Watch tracks an EVM address on behalf of a chain account.
+message Watch {
+  uint64 id      = 1;
+  string owner   = 2;
+  string network = 3;
+  string address = 4;
+  string label   = 5;
+}
+
+// Webhook is a delivery endpoint registered by a chain account.
+message Webhook {
+  uint64 id          = 1;
+  string owner       = 2;
+  string url         = 3;
+  string secret_hash = 4;
+}
+
+// GenesisState is the genesis state of the mehr module.
+message GenesisState {
+  repeated Watch   watches  = 1;
+  repeated Webhook webhooks = 2;
+}

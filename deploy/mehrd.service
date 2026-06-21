@@ -1,0 +1,26 @@
+[Unit]
+Description=Mehrfunds node (mehrd)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mehrd
+Group=mehrd
+ExecStart=/usr/local/bin/mehrd start --home /var/lib/mehrd
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+# stdout logs go to journald; view with: journalctl -u mehrd -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mehrd
+
+# Prevent the process from gaining new privileges
+NoNewPrivileges=true
+# Prevent writes outside the data directory
+ReadWritePaths=/var/lib/mehrd
+
+[Install]
+WantedBy=multi-user.target

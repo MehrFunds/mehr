@@ -1,0 +1,69 @@
+package keeper
+
+import (
+	"context"
+	"net/url"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/mehrfunds/mehr/x/mehr/types"
+)
+
+// MsgServer handles state-mutating messages for the mehr module.
+type MsgServer struct {
+	Keeper
+}
+
+func NewMsgServer(k Keeper) MsgServer {
+	return MsgServer{Keeper: k}
+}
+
+func (m MsgServer) CreateWatch(goCtx context.Context, msg *types.MsgCreateWatch) (*types.MsgCreateWatchResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	if msg.Address == "" {
+		return nil, types.ErrInvalidAddress
+	}
+	w, err := m.Keeper.CreateWatch(ctx, msg.Creator, msg.Network, msg.Address, msg.Label)
+	if err != nil {
+		return nil, err
+	}
+	return &types.MsgCreateWatchResponse{Watch: w}, nil
+}
+
+func (m MsgServer) DeleteWatch(goCtx context.Context, msg *types.MsgDeleteWatch) (*types.MsgDeleteWatchResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	w, ok := m.Keeper.GetWatch(ctx, msg.WatchId)
+	if !ok {
+		return nil, types.ErrWatchNotFound
+	}
+	if w.Owner != msg.Creator {
+		return nil, types.ErrUnauthorized
+	}
+	m.Keeper.DeleteWatch(ctx, msg.WatchId, msg.Creator)
+	return &types.MsgDeleteWatchResponse{}, nil
+}
+
+func (m MsgServer) CreateWebhook(goCtx context.Context, msg *types.MsgCreateWebhook) (*types.MsgCreateWebhookResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	if _, err := url.ParseRequestURI(msg.Url); err != nil {
+		return nil, types.ErrInvalidURL
+	}
+	wh, err := m.Keeper.CreateWebhook(ctx, msg.Creator, msg.Url, msg.SecretHash)
+	if err != nil {
+		return nil, err
+	}
+	return &types.MsgCreateWebhookResponse{Webhook: wh}, nil
+}
+
+func (m MsgServer) DeleteWebhook(goCtx context.Context, msg *types.MsgDeleteWebhook) (*types.MsgDeleteWebhookResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	wh, ok := m.Keeper.GetWebhook(ctx, msg.WebhookId)
+	if !ok {
+		return nil, types.ErrWebhookNotFound
+	}
+	if wh.Owner != msg.Creator {
+		return nil, types.ErrUnauthorized
+	}
+	m.Keeper.DeleteWebhook(ctx, msg.WebhookId, msg.Creator)
+	return &types.MsgDeleteWebhookResponse{}, nil
+}

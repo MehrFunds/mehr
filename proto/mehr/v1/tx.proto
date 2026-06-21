@@ -1,0 +1,55 @@
+syntax = "proto3";
+package mehr.v1;
+
+import "cosmos/msg/v1/msg.proto";
+import "mehr/v1/types.proto";
+
+option go_package = "github.com/mehrfunds/node/x/mehr/types";
+
+// Msg defines the transaction service for the mehr module.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // CreateWatch registers a new EVM address watch.
+  rpc CreateWatch(MsgCreateWatch) returns (MsgCreateWatchResponse);
+
+  // DeleteWatch removes an existing watch (must be owner).
+  rpc DeleteWatch(MsgDeleteWatch) returns (MsgDeleteWatchResponse);
+
+  // CreateWebhook registers a new webhook delivery endpoint.
+  rpc CreateWebhook(MsgCreateWebhook) returns (MsgCreateWebhookResponse);
+
+  // DeleteWebhook removes an existing webhook (must be owner).
+  rpc DeleteWebhook(MsgDeleteWebhook) returns (MsgDeleteWebhookResponse);
+}
+
+message MsgCreateWatch {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string network = 2;
+  string address = 3;
+  string label   = 4;
+}
+message MsgCreateWatchResponse { Watch watch = 1; }
+
+message MsgDeleteWatch {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator  = 1;
+  uint64 watch_id = 2;
+}
+message MsgDeleteWatchResponse {}
+
+message MsgCreateWebhook {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string url         = 2;
+  string secret_hash = 3;
+}
+message MsgCreateWebhookResponse { Webhook webhook = 1; }
+
+message MsgDeleteWebhook {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator    = 1;
+  uint64 webhook_id = 2;
+}
+message MsgDeleteWebhookResponse {}

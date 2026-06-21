@@ -1,0 +1,42 @@
+syntax = "proto3";
+package mehr.v1;
+
+import "google/api/annotations.proto";
+import "mehr/v1/types.proto";
+
+option go_package = "github.com/mehrfunds/node/x/mehr/types";
+
+// Query defines the gRPC query service for the mehr module.
+service Query {
+  // Watches returns all watches owned by an address.
+  rpc Watches(QueryWatchesRequest) returns (QueryWatchesResponse) {
+    option (google.api.http).get = "/mehr/v1/watches/{owner}";
+  }
+
+  // Watch returns a single watch by ID.
+  rpc Watch(QueryWatchRequest) returns (QueryWatchResponse) {
+    option (google.api.http).get = "/mehr/v1/watch/{id}";
+  }
+
+  // Webhooks returns all webhooks owned by an address.
+  rpc Webhooks(QueryWebhooksRequest) returns (QueryWebhooksResponse) {
+    option (google.api.http).get = "/mehr/v1/webhooks/{owner}";
+  }
+
+  // Webhook returns a single webhook by ID.
+  rpc Webhook(QueryWebhookRequest) returns (QueryWebhookResponse) {
+    option (google.api.http).get = "/mehr/v1/webhook/{id}";
+  }
+}
+
+message QueryWatchesRequest  { string owner = 1; }
+message QueryWatchesResponse { repeated Watch watches = 1; }
+
+message QueryWatchRequest    { uint64 id = 1; }
+message QueryWatchResponse   { Watch watch = 1; }
+
+message QueryWebhooksRequest  { string owner = 1; }
+message QueryWebhooksResponse { repeated Webhook webhooks = 1; }
+
+message QueryWebhookRequest   { uint64 id = 1; }
+message QueryWebhookResponse  { Webhook webhook = 1; }
