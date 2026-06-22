@@ -54,7 +54,7 @@ func (AppModule) RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 }
 
 func (AppModule) DefaultGenesis(_ codec.JSONCodec) json.RawMessage {
-	gs := &types.GenesisState{Watches: []*types.Watch{}, Webhooks: []*types.Webhook{}}
+	gs := &types.GenesisState{Watches: []*types.Watch{}, Webhooks: []*types.Webhook{}, Events: []*types.Event{}}
 	bz, _ := json.Marshal(gs)
 	return bz
 }

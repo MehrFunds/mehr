@@ -12,6 +12,7 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 		&MsgDeleteWatch{},
 		&MsgCreateWebhook{},
 		&MsgDeleteWebhook{},
+		&MsgSubmitEvent{},
 	)
 	msgservice.RegisterMsgServiceDesc(registry, &Msg_serviceDesc)
 }

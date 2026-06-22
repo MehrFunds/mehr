@@ -438,14 +438,22 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
+	// AllWatches returns every watch across all owners — used by feeders.
+	AllWatches(ctx context.Context, in *QueryAllWatchesRequest, opts ...grpc.CallOption) (*QueryAllWatchesResponse, error)
 	// Watches returns all watches owned by an address.
 	Watches(ctx context.Context, in *QueryWatchesRequest, opts ...grpc.CallOption) (*QueryWatchesResponse, error)
 	// Watch returns a single watch by ID.
 	Watch(ctx context.Context, in *QueryWatchRequest, opts ...grpc.CallOption) (*QueryWatchResponse, error)
+	// AllWebhooks returns every webhook across all owners — used by webhook workers.
+	AllWebhooks(ctx context.Context, in *QueryAllWebhooksRequest, opts ...grpc.CallOption) (*QueryAllWebhooksResponse, error)
 	// Webhooks returns all webhooks owned by an address.
 	Webhooks(ctx context.Context, in *QueryWebhooksRequest, opts ...grpc.CallOption) (*QueryWebhooksResponse, error)
 	// Webhook returns a single webhook by ID.
 	Webhook(ctx context.Context, in *QueryWebhookRequest, opts ...grpc.CallOption) (*QueryWebhookResponse, error)
+	// Events returns all recorded events for a watched address.
+	Events(ctx context.Context, in *QueryEventsRequest, opts ...grpc.CallOption) (*QueryEventsResponse, error)
+	// Event returns a single event by ID.
+	Event(ctx context.Context, in *QueryEventRequest, opts ...grpc.CallOption) (*QueryEventResponse, error)
 }
 
 type queryClient struct {
@@ -492,33 +500,89 @@ func (c *queryClient) Webhook(ctx context.Context, in *QueryWebhookRequest, opts
 	return out, nil
 }
 
+func (c *queryClient) AllWatches(ctx context.Context, in *QueryAllWatchesRequest, opts ...grpc.CallOption) (*QueryAllWatchesResponse, error) {
+	out := new(QueryAllWatchesResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllWatches", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) AllWebhooks(ctx context.Context, in *QueryAllWebhooksRequest, opts ...grpc.CallOption) (*QueryAllWebhooksResponse, error) {
+	out := new(QueryAllWebhooksResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllWebhooks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Events(ctx context.Context, in *QueryEventsRequest, opts ...grpc.CallOption) (*QueryEventsResponse, error) {
+	out := new(QueryEventsResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Events", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Event(ctx context.Context, in *QueryEventRequest, opts ...grpc.CallOption) (*QueryEventResponse, error) {
+	out := new(QueryEventResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Event", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
+	// AllWatches returns every watch across all owners — used by feeders.
+	AllWatches(context.Context, *QueryAllWatchesRequest) (*QueryAllWatchesResponse, error)
 	// Watches returns all watches owned by an address.
 	Watches(context.Context, *QueryWatchesRequest) (*QueryWatchesResponse, error)
 	// Watch returns a single watch by ID.
 	Watch(context.Context, *QueryWatchRequest) (*QueryWatchResponse, error)
+	// AllWebhooks returns every webhook across all owners — used by webhook workers.
+	AllWebhooks(context.Context, *QueryAllWebhooksRequest) (*QueryAllWebhooksResponse, error)
 	// Webhooks returns all webhooks owned by an address.
 	Webhooks(context.Context, *QueryWebhooksRequest) (*QueryWebhooksResponse, error)
 	// Webhook returns a single webhook by ID.
 	Webhook(context.Context, *QueryWebhookRequest) (*QueryWebhookResponse, error)
+	// Events returns all recorded events for a watched address.
+	Events(context.Context, *QueryEventsRequest) (*QueryEventsResponse, error)
+	// Event returns a single event by ID.
+	Event(context.Context, *QueryEventRequest) (*QueryEventResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
 type UnimplementedQueryServer struct {
 }
 
+func (*UnimplementedQueryServer) AllWatches(ctx context.Context, req *QueryAllWatchesRequest) (*QueryAllWatchesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllWatches not implemented")
+}
 func (*UnimplementedQueryServer) Watches(ctx context.Context, req *QueryWatchesRequest) (*QueryWatchesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Watches not implemented")
 }
 func (*UnimplementedQueryServer) Watch(ctx context.Context, req *QueryWatchRequest) (*QueryWatchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Watch not implemented")
 }
+func (*UnimplementedQueryServer) AllWebhooks(ctx context.Context, req *QueryAllWebhooksRequest) (*QueryAllWebhooksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllWebhooks not implemented")
+}
 func (*UnimplementedQueryServer) Webhooks(ctx context.Context, req *QueryWebhooksRequest) (*QueryWebhooksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Webhooks not implemented")
 }
 func (*UnimplementedQueryServer) Webhook(ctx context.Context, req *QueryWebhookRequest) (*QueryWebhookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Webhook not implemented")
+}
+func (*UnimplementedQueryServer) Events(ctx context.Context, req *QueryEventsRequest) (*QueryEventsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Events not implemented")
+}
+func (*UnimplementedQueryServer) Event(ctx context.Context, req *QueryEventRequest) (*QueryEventResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Event not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -597,11 +661,87 @@ func _Query_Webhook_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_AllWatches_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllWatchesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AllWatches(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/AllWatches",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AllWatches(ctx, req.(*QueryAllWatchesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_AllWebhooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllWebhooksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AllWebhooks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/AllWebhooks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AllWebhooks(ctx, req.(*QueryAllWebhooksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Events_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryEventsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Events(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/Events",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Events(ctx, req.(*QueryEventsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Event_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryEventRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Event(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/Event",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Event(ctx, req.(*QueryEventRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var Query_serviceDesc = _Query_serviceDesc
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "mehr.v1.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AllWatches",
+			Handler:    _Query_AllWatches_Handler,
+		},
 		{
 			MethodName: "Watches",
 			Handler:    _Query_Watches_Handler,
@@ -611,12 +751,24 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Watch_Handler,
 		},
 		{
+			MethodName: "AllWebhooks",
+			Handler:    _Query_AllWebhooks_Handler,
+		},
+		{
 			MethodName: "Webhooks",
 			Handler:    _Query_Webhooks_Handler,
 		},
 		{
 			MethodName: "Webhook",
 			Handler:    _Query_Webhook_Handler,
+		},
+		{
+			MethodName: "Events",
+			Handler:    _Query_Events_Handler,
+		},
+		{
+			MethodName: "Event",
+			Handler:    _Query_Event_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

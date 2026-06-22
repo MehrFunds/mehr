@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"net/url"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -66,4 +67,45 @@ func (m MsgServer) DeleteWebhook(goCtx context.Context, msg *types.MsgDeleteWebh
 	}
 	m.Keeper.DeleteWebhook(ctx, msg.WebhookId, msg.Creator)
 	return &types.MsgDeleteWebhookResponse{}, nil
+}
+
+func (m MsgServer) SubmitEvent(goCtx context.Context, msg *types.MsgSubmitEvent) (*types.MsgSubmitEventResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+
+	watch := m.Keeper.FindWatchForAddress(ctx, msg.Network, msg.Address)
+	if watch == nil {
+		return nil, types.ErrWatchNotActive
+	}
+
+	if m.Keeper.IsDuplicateEvent(ctx, msg.Network, msg.TxHash, msg.LogIndex) {
+		return nil, types.ErrDuplicateEvent
+	}
+
+	e := &types.Event{
+		Feeder:      msg.Feeder,
+		WatchId:     watch.Id,
+		Network:     msg.Network,
+		Address:     msg.Address,
+		TxHash:      msg.TxHash,
+		BlockNumber: msg.BlockNumber,
+		LogIndex:    msg.LogIndex,
+		Asset:       msg.Asset,
+		Contract:    msg.Contract,
+		FromAddress: msg.FromAddress,
+		AmountRaw:   msg.AmountRaw,
+		Decimals:    msg.Decimals,
+		Metadata:    msg.Metadata,
+		SubmittedAt: ctx.BlockTime().Format(time.RFC3339),
+	}
+
+	saved, err := m.Keeper.CreateEvent(ctx, e)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgSubmitEventResponse{Event: saved}, nil
 }

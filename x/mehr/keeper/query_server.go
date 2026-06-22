@@ -44,3 +44,27 @@ func (q QueryServer) Webhook(goCtx context.Context, req *types.QueryWebhookReque
 	}
 	return &types.QueryWebhookResponse{Webhook: wh}, nil
 }
+
+func (q QueryServer) AllWatches(goCtx context.Context, _ *types.QueryAllWatchesRequest) (*types.QueryAllWatchesResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryAllWatchesResponse{Watches: q.Keeper.GetAllWatches(ctx)}, nil
+}
+
+func (q QueryServer) AllWebhooks(goCtx context.Context, _ *types.QueryAllWebhooksRequest) (*types.QueryAllWebhooksResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryAllWebhooksResponse{Webhooks: q.Keeper.GetAllWebhooks(ctx)}, nil
+}
+
+func (q QueryServer) Events(goCtx context.Context, req *types.QueryEventsRequest) (*types.QueryEventsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryEventsResponse{Events: q.Keeper.GetEventsByAddress(ctx, req.Address)}, nil
+}
+
+func (q QueryServer) Event(goCtx context.Context, req *types.QueryEventRequest) (*types.QueryEventResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	e, ok := q.Keeper.GetEvent(ctx, req.Id)
+	if !ok {
+		return nil, types.ErrEventNotFound
+	}
+	return &types.QueryEventResponse{Event: e}, nil
+}

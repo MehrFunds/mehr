@@ -212,6 +212,127 @@ func (k Keeper) GetAllWebhooks(ctx sdk.Context) []*types.Webhook {
 	return out
 }
 
+// ── Event ─────────────────────────────────────────────────────────────────────
+
+func (k Keeper) nextEventID(ctx sdk.Context) uint64 {
+	bz := k.kvStore(ctx).Get([]byte(types.EventCountKey))
+	if bz == nil {
+		return 1
+	}
+	return binary.BigEndian.Uint64(bz) + 1
+}
+
+func (k Keeper) setEventCount(ctx sdk.Context, n uint64) {
+	bz := make([]byte, 8)
+	binary.BigEndian.PutUint64(bz, n)
+	k.kvStore(ctx).Set([]byte(types.EventCountKey), bz)
+}
+
+func eventKey(id uint64) []byte {
+	bz := make([]byte, 8)
+	binary.BigEndian.PutUint64(bz, id)
+	return append([]byte(types.EventKeyPrefix), bz...)
+}
+
+// dedupKey returns the key used to detect duplicate events.
+// Format: ed/<network>/<txHash>/<logIndex_8bytes>
+func dedupKey(network, txHash string, logIndex int32) []byte {
+	bz := make([]byte, 4)
+	binary.BigEndian.PutUint32(bz, uint32(logIndex))
+	key := types.EventDedupPrefix + network + "/" + txHash + "/"
+	return append([]byte(key), bz...)
+}
+
+// addrEventKey returns the address index key for an event.
+// Format: ea/<address>/<id_8bytes>
+func addrEventKey(address string, id uint64) []byte {
+	bz := make([]byte, 8)
+	binary.BigEndian.PutUint64(bz, id)
+	return append([]byte(types.EventAddrIndexPrefix+address+"/"), bz...)
+}
+
+// FindWatchForAddress returns the first active watch matching network+address, or nil.
+func (k Keeper) FindWatchForAddress(ctx sdk.Context, network, address string) *types.Watch {
+	st := k.kvStore(ctx)
+	iter := storetypes.KVStorePrefixIterator(st, []byte(types.WatchKeyPrefix))
+	defer iter.Close()
+	for ; iter.Valid(); iter.Next() {
+		var w types.Watch
+		if err := proto.Unmarshal(iter.Value(), &w); err == nil {
+			if w.Network == network && w.Address == address {
+				return &w
+			}
+		}
+	}
+	return nil
+}
+
+func (k Keeper) IsDuplicateEvent(ctx sdk.Context, network, txHash string, logIndex int32) bool {
+	return k.kvStore(ctx).Has(dedupKey(network, txHash, logIndex))
+}
+
+func (k Keeper) CreateEvent(ctx sdk.Context, e *types.Event) (*types.Event, error) {
+	id := k.nextEventID(ctx)
+	e.Id = id
+	bz, err := proto.Marshal(e)
+	if err != nil {
+		return nil, err
+	}
+	st := k.kvStore(ctx)
+	st.Set(eventKey(id), bz)
+	st.Set(dedupKey(e.Network, e.TxHash, e.LogIndex), []byte{1})
+	st.Set(addrEventKey(e.Address, id), []byte{1})
+	k.setEventCount(ctx, id)
+	return e, nil
+}
+
+func (k Keeper) GetEvent(ctx sdk.Context, id uint64) (*types.Event, bool) {
+	bz := k.kvStore(ctx).Get(eventKey(id))
+	if bz == nil {
+		return nil, false
+	}
+	var e types.Event
+	if err := proto.Unmarshal(bz, &e); err != nil {
+		return nil, false
+	}
+	return &e, true
+}
+
+func (k Keeper) GetEventsByAddress(ctx sdk.Context, address string) []*types.Event {
+	st := k.kvStore(ctx)
+	prefix := []byte(types.EventAddrIndexPrefix + address + "/")
+	iter := storetypes.KVStorePrefixIterator(st, prefix)
+	defer iter.Close()
+
+	var out []*types.Event
+	for ; iter.Valid(); iter.Next() {
+		key := iter.Key()
+		if len(key) < 8 {
+			continue
+		}
+		id := binary.BigEndian.Uint64(key[len(key)-8:])
+		if e, ok := k.GetEvent(ctx, id); ok {
+			out = append(out, e)
+		}
+	}
+	return out
+}
+
+func (k Keeper) GetAllEvents(ctx sdk.Context) []*types.Event {
+	st := k.kvStore(ctx)
+	iter := storetypes.KVStorePrefixIterator(st, []byte(types.EventKeyPrefix))
+	defer iter.Close()
+
+	var out []*types.Event
+	for ; iter.Valid(); iter.Next() {
+		var e types.Event
+		if err := proto.Unmarshal(iter.Value(), &e); err == nil {
+			out = append(out, &e)
+		}
+	}
+	return out
+}
+
 // ── Genesis helpers ──────────────────────────────────────────────────────────
 
 func (k Keeper) ImportGenesis(ctx sdk.Context, gs *types.GenesisState) {
@@ -229,11 +350,20 @@ func (k Keeper) ImportGenesis(ctx sdk.Context, gs *types.GenesisState) {
 		st.Set(ownerWebhookKey(wh.Owner, wh.Id), []byte{1})
 		k.setWebhookCount(ctx, wh.Id)
 	}
+	for _, e := range gs.Events {
+		bz, _ := proto.Marshal(e)
+		st := k.kvStore(ctx)
+		st.Set(eventKey(e.Id), bz)
+		st.Set(dedupKey(e.Network, e.TxHash, e.LogIndex), []byte{1})
+		st.Set(addrEventKey(e.Address, e.Id), []byte{1})
+		k.setEventCount(ctx, e.Id)
+	}
 }
 
 func (k Keeper) ExportGenesis(ctx sdk.Context) *types.GenesisState {
 	return &types.GenesisState{
 		Watches:  k.GetAllWatches(ctx),
 		Webhooks: k.GetAllWebhooks(ctx),
+		Events:   k.GetAllEvents(ctx),
 	}
 }

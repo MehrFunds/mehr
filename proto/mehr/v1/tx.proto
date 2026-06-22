@@ -4,13 +4,13 @@ package mehr.v1;
 import "cosmos/msg/v1/msg.proto";
 import "mehr/v1/types.proto";
 
-option go_package = "github.com/mehrfunds/node/x/mehr/types";
+option go_package = "github.com/mehrfunds/mehr/x/mehr/types";
 
 // Msg defines the transaction service for the mehr module.
 service Msg {
   option (cosmos.msg.v1.service) = true;
 
-  // CreateWatch registers a new EVM address watch.
+  // CreateWatch registers a new address watch.
   rpc CreateWatch(MsgCreateWatch) returns (MsgCreateWatchResponse);
 
   // DeleteWatch removes an existing watch (must be owner).
@@ -21,6 +21,9 @@ service Msg {
 
   // DeleteWebhook removes an existing webhook (must be owner).
   rpc DeleteWebhook(MsgDeleteWebhook) returns (MsgDeleteWebhookResponse);
+
+  // SubmitEvent is called by feeders to record an external chain event.
+  rpc SubmitEvent(MsgSubmitEvent) returns (MsgSubmitEventResponse);
 }
 
 message MsgCreateWatch {
@@ -53,3 +56,24 @@ message MsgDeleteWebhook {
   uint64 webhook_id = 2;
 }
 message MsgDeleteWebhookResponse {}
+
+// MsgSubmitEvent is broadcast by feeders to record an external chain event.
+// The feeder must have a mehr account and pay gas.
+// Rejected if network+address does not match any active watch,
+// or if network+tx_hash+log_index was already recorded (idempotent).
+message MsgSubmitEvent {
+  option (cosmos.msg.v1.signer) = "feeder";
+  string feeder       = 1;
+  string network      = 2;  // "ethereum" | "base" | "tron" | ...
+  string address      = 3;  // destination address on the source chain
+  string tx_hash      = 4;
+  int64  block_number = 5;
+  int32  log_index    = 6;  // EVM log index; 0 for non-EVM
+  string asset        = 7;  // "ETH" | "USDC" | "TRX" | ...
+  string contract     = 8;  // token contract; empty for native asset
+  string from_address = 9;
+  string amount_raw   = 10; // raw integer as string (e.g. "1000000")
+  int32  decimals     = 11; // decimal places for the asset
+  string metadata     = 12; // optional JSON for feeder-specific fields
+}
+message MsgSubmitEventResponse { Event event = 1; }

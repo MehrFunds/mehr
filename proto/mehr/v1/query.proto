@@ -4,10 +4,15 @@ package mehr.v1;
 import "google/api/annotations.proto";
 import "mehr/v1/types.proto";
 
-option go_package = "github.com/mehrfunds/node/x/mehr/types";
+option go_package = "github.com/mehrfunds/mehr/x/mehr/types";
 
 // Query defines the gRPC query service for the mehr module.
 service Query {
+  // AllWatches returns every watch across all owners — used by feeders.
+  rpc AllWatches(QueryAllWatchesRequest) returns (QueryAllWatchesResponse) {
+    option (google.api.http).get = "/mehr/v1/watches";
+  }
+
   // Watches returns all watches owned by an address.
   rpc Watches(QueryWatchesRequest) returns (QueryWatchesResponse) {
     option (google.api.http).get = "/mehr/v1/watches/{owner}";
@@ -27,7 +32,25 @@ service Query {
   rpc Webhook(QueryWebhookRequest) returns (QueryWebhookResponse) {
     option (google.api.http).get = "/mehr/v1/webhook/{id}";
   }
+
+  // AllWebhooks returns every webhook across all owners — used by webhook workers.
+  rpc AllWebhooks(QueryAllWebhooksRequest) returns (QueryAllWebhooksResponse) {
+    option (google.api.http).get = "/mehr/v1/webhooks";
+  }
+
+  // Events returns all recorded events for a watched address.
+  rpc Events(QueryEventsRequest) returns (QueryEventsResponse) {
+    option (google.api.http).get = "/mehr/v1/events/{address}";
+  }
+
+  // Event returns a single event by ID.
+  rpc Event(QueryEventRequest) returns (QueryEventResponse) {
+    option (google.api.http).get = "/mehr/v1/event/{id}";
+  }
 }
+
+message QueryAllWatchesRequest  {}
+message QueryAllWatchesResponse { repeated Watch watches = 1; }
 
 message QueryWatchesRequest  { string owner = 1; }
 message QueryWatchesResponse { repeated Watch watches = 1; }
@@ -35,8 +58,17 @@ message QueryWatchesResponse { repeated Watch watches = 1; }
 message QueryWatchRequest    { uint64 id = 1; }
 message QueryWatchResponse   { Watch watch = 1; }
 
+message QueryAllWebhooksRequest  {}
+message QueryAllWebhooksResponse { repeated Webhook webhooks = 1; }
+
 message QueryWebhooksRequest  { string owner = 1; }
 message QueryWebhooksResponse { repeated Webhook webhooks = 1; }
 
 message QueryWebhookRequest   { uint64 id = 1; }
 message QueryWebhookResponse  { Webhook webhook = 1; }
+
+message QueryEventsRequest    { string address = 1; }
+message QueryEventsResponse   { repeated Event events = 1; }
+
+message QueryEventRequest     { uint64 id = 1; }
+message QueryEventResponse    { Event event = 1; }

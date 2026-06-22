@@ -1,9 +1,9 @@
 syntax = "proto3";
 package mehr.v1;
 
-option go_package = "github.com/mehrfunds/node/x/mehr/types";
+option go_package = "github.com/mehrfunds/mehr/x/mehr/types";
 
-// Watch tracks an EVM address on behalf of a chain account.
+// Watch tracks an address on behalf of a chain account.
 message Watch {
   uint64 id      = 1;
   string owner   = 2;
@@ -20,8 +20,28 @@ message Webhook {
   string secret_hash = 4;
 }
 
+// Event is an external chain event submitted by a feeder.
+message Event {
+  uint64 id           = 1;
+  string feeder       = 2;  // mehr address of the submitting feeder
+  uint64 watch_id     = 3;  // matched Watch.id
+  string network      = 4;  // "ethereum", "tron", "base", etc.
+  string address      = 5;  // destination address on the source chain
+  string tx_hash      = 6;
+  int64  block_number = 7;
+  int32  log_index    = 8;  // EVM log index; 0 for non-EVM
+  string asset        = 9;  // "ETH", "USDC", "TRX", etc.
+  string contract     = 10; // token contract; empty for native asset
+  string from_address = 11;
+  string amount_raw   = 12; // raw integer as string (no decimals applied)
+  int32  decimals     = 13;
+  string metadata     = 14; // arbitrary JSON for feeder-specific fields
+  string submitted_at = 15; // RFC3339 timestamp
+}
+
 // GenesisState is the genesis state of the mehr module.
 message GenesisState {
   repeated Watch   watches  = 1;
   repeated Webhook webhooks = 2;
+  repeated Event   events   = 3;
 }

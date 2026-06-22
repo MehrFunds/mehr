@@ -543,6 +543,8 @@ type MsgServer interface {
 	CreateWebhook(context.Context, *MsgCreateWebhook) (*MsgCreateWebhookResponse, error)
 	// DeleteWebhook removes an existing webhook (must be owner).
 	DeleteWebhook(context.Context, *MsgDeleteWebhook) (*MsgDeleteWebhookResponse, error)
+	// SubmitEvent is called by feeders to record an external chain event.
+	SubmitEvent(context.Context, *MsgSubmitEvent) (*MsgSubmitEventResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -560,6 +562,9 @@ func (*UnimplementedMsgServer) CreateWebhook(ctx context.Context, req *MsgCreate
 }
 func (*UnimplementedMsgServer) DeleteWebhook(ctx context.Context, req *MsgDeleteWebhook) (*MsgDeleteWebhookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWebhook not implemented")
+}
+func (*UnimplementedMsgServer) SubmitEvent(ctx context.Context, req *MsgSubmitEvent) (*MsgSubmitEventResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitEvent not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -638,6 +643,24 @@ func _Msg_DeleteWebhook_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_SubmitEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitEvent)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SubmitEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Msg/SubmitEvent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SubmitEvent(ctx, req.(*MsgSubmitEvent))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var Msg_serviceDesc = _Msg_serviceDesc
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "mehr.v1.Msg",
@@ -658,6 +681,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteWebhook",
 			Handler:    _Msg_DeleteWebhook_Handler,
+		},
+		{
+			MethodName: "SubmitEvent",
+			Handler:    _Msg_SubmitEvent_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
