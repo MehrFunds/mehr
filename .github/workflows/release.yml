@@ -10,6 +10,7 @@ jobs:
     permissions:
       contents: read
     strategy:
+      fail-fast: false
       matrix:
         include:
           - goos: linux
@@ -18,10 +19,6 @@ jobs:
           - goos: linux
             goarch: arm64
             suffix: linux-arm64
-          - goos: linux
-            goarch: arm
-            goarm: "7"
-            suffix: linux-arm
           - goos: darwin
             goarch: amd64
             suffix: darwin-amd64

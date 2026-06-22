@@ -31,7 +31,7 @@ detect_platform() {
   case "$ARCH" in
     x86_64)        ARCH="amd64" ;;
     arm64|aarch64) ARCH="arm64" ;;
-    armv7l|armv6l) ARCH="arm"   ;;
+    armv7l|armv6l) die "32-bit ARM is not supported (a dependency blocks it). Use a 64-bit OS on this board." ;;
     *)
       die "Unsupported architecture: $ARCH"
       ;;

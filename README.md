@@ -22,7 +22,6 @@ Pre-built binaries are attached to every [release](https://github.com/MehrFunds/
 |--------|----------|
 | `mehrd-linux-amd64` | Linux x86-64 |
 | `mehrd-linux-arm64` | Linux ARM64 (Graviton, RPi 4+) |
-| `mehrd-linux-arm` | Linux ARMv7 (RPi 3) |
 | `mehrd-darwin-amd64` | macOS Intel |
 | `mehrd-darwin-arm64` | macOS Apple Silicon |
 | `mehrd-windows-amd64.exe` | Windows x86-64 |
