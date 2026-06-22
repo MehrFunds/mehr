@@ -18,15 +18,27 @@ PID_FILE="/tmp/mehrd.pid"
 detect_platform() {
   OS=$(uname -s | tr '[:upper:]' '[:lower:]')
   ARCH=$(uname -m)
+
+  case "$OS" in
+    linux)  ;;
+    darwin) ;;
+    msys*|mingw*|cygwin*) OS="windows" ;;
+    *)
+      die "Unsupported OS: $OS — download manually from https://github.com/${REPO}/releases"
+      ;;
+  esac
+
   case "$ARCH" in
     x86_64)        ARCH="amd64" ;;
     arm64|aarch64) ARCH="arm64" ;;
-    *) die "Unsupported architecture: $ARCH" ;;
+    armv7l|armv6l) ARCH="arm"   ;;
+    *)
+      die "Unsupported architecture: $ARCH"
+      ;;
   esac
-  case "$OS" in
-    linux|darwin) ;;
-    *) die "Unsupported OS: $OS" ;;
-  esac
+
+  EXT=""
+  [ "$OS" = "windows" ] && EXT=".exe"
 }
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -47,17 +59,20 @@ http_get() {
 }
 
 mehrd_bin() {
-  command -v "$BINARY" 2>/dev/null || printf "%s" "${BIN_DIR:-/usr/local/bin}/${BINARY}"
+  command -v "$BINARY" 2>/dev/null || printf "%s" "${BIN_DIR:-/usr/local/bin}/${BINARY}${EXT:-}"
 }
 
 # ── install binary ────────────────────────────────────────────────────────────
 
 install_binary() {
   detect_platform
-  ASSET="${BINARY}-${OS}-${ARCH}"
+  ASSET="${BINARY}-${OS}-${ARCH}${EXT}"
   URL="https://github.com/${REPO}/releases/latest/download/${ASSET}"
 
-  if [ -w /usr/local/bin ]; then
+  if [ "$OS" = "windows" ]; then
+    BIN_DIR="${HOME}/.local/bin"
+    mkdir -p "$BIN_DIR"
+  elif [ -w /usr/local/bin ]; then
     BIN_DIR="/usr/local/bin"
   elif [ -w /usr/bin ]; then
     BIN_DIR="/usr/bin"
@@ -67,9 +82,9 @@ install_binary() {
   fi
 
   say "Downloading ${ASSET}..."
-  http_get "$URL" "${BIN_DIR}/${BINARY}"
-  chmod +x "${BIN_DIR}/${BINARY}"
-  say "Installed ${BIN_DIR}/${BINARY}"
+  http_get "$URL" "${BIN_DIR}/${BINARY}${EXT}"
+  [ "$OS" != "windows" ] && chmod +x "${BIN_DIR}/${BINARY}${EXT}"
+  say "Installed ${BIN_DIR}/${BINARY}${EXT}"
 
   case ":${PATH}:" in
     *":${BIN_DIR}:"*) ;;

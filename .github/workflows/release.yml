@@ -15,12 +15,27 @@ jobs:
           - goos: linux
             goarch: amd64
             suffix: linux-amd64
+          - goos: linux
+            goarch: arm64
+            suffix: linux-arm64
+          - goos: linux
+            goarch: arm
+            goarm: "7"
+            suffix: linux-arm
           - goos: darwin
             goarch: amd64
             suffix: darwin-amd64
           - goos: darwin
             goarch: arm64
             suffix: darwin-arm64
+          - goos: windows
+            goarch: amd64
+            suffix: windows-amd64
+            ext: .exe
+          - goos: windows
+            goarch: arm64
+            suffix: windows-arm64
+            ext: .exe
     steps:
       - uses: actions/checkout@v4
 
@@ -32,6 +47,7 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
+          GOARM: ${{ matrix.goarm }}
           CGO_ENABLED: 0
           GOFLAGS: -buildvcs=false
         run: |
@@ -42,13 +58,13 @@ jobs:
               -X github.com/cosmos/cosmos-sdk/version.AppName=mehrd \
               -X github.com/cosmos/cosmos-sdk/version.Version=${{ github.ref_name }} \
               -X github.com/cosmos/cosmos-sdk/version.Commit=${{ github.sha }}" \
-            -o mehrd-${{ matrix.suffix }} \
+            -o "mehrd-${{ matrix.suffix }}${{ matrix.ext }}" \
             ./cmd/mehrd
 
       - uses: actions/upload-artifact@v4
         with:
           name: mehrd-${{ matrix.suffix }}
-          path: mehrd-${{ matrix.suffix }}
+          path: "mehrd-${{ matrix.suffix }}${{ matrix.ext }}"
 
   release:
     needs: build
