@@ -1,6 +1,8 @@
 version: 1
 validation: sovereign
 default_denom: umehr
+build:
+  main: cmd/mehrd
 accounts:
 - name: alice
   coins:
