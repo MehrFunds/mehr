@@ -66,6 +66,13 @@ go build ./cmd/mehrd
 go test ./...
 ```
 
+## TODO
+
+- [ ] Register a dedicated coin type in [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md) so wallets derive `umehr` keys at a unique BIP-44 path instead of sharing Cosmos's default `118`
+- [ ] Add more validators and open the network
+- [ ] Publish genesis to a well-known URL so new nodes can join without manual config
+- [ ] IBC connection to Cosmos Hub
+
 ## Links
 
 - [Mehr Funds](https://mehrfunds.com)
