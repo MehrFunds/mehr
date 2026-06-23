@@ -13,6 +13,8 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 		&MsgCreateWebhook{},
 		&MsgDeleteWebhook{},
 		&MsgSubmitEvent{},
+		&MsgDelegateFeeder{},
+		&MsgRevokeDelegation{},
 	)
 	msgservice.RegisterMsgServiceDesc(registry, &Msg_serviceDesc)
 }

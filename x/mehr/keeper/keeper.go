@@ -333,6 +333,84 @@ func (k Keeper) GetAllEvents(ctx sdk.Context) []*types.Event {
 	return out
 }
 
+// ── FeederDelegation ─────────────────────────────────────────────────────────
+
+func delegationKey(delegator string) []byte {
+	return append([]byte(types.FeederDelegationKeyPrefix), []byte(delegator)...)
+}
+
+func feederReverseKey(feeder string) []byte {
+	return append([]byte(types.FeederReverseIndexPrefix), []byte(feeder)...)
+}
+
+func (k Keeper) SetDelegation(ctx sdk.Context, delegator, feeder string) error {
+	d := &types.FeederDelegation{Delegator: delegator, Feeder: feeder}
+	bz, err := proto.Marshal(d)
+	if err != nil {
+		return err
+	}
+	st := k.kvStore(ctx)
+	// Remove old reverse index if there was a previous delegation.
+	if old := st.Get(delegationKey(delegator)); old != nil {
+		var prev types.FeederDelegation
+		if err2 := proto.Unmarshal(old, &prev); err2 == nil && prev.Feeder != "" {
+			st.Delete(feederReverseKey(prev.Feeder))
+		}
+	}
+	st.Set(delegationKey(delegator), bz)
+	st.Set(feederReverseKey(feeder), []byte(delegator))
+	return nil
+}
+
+func (k Keeper) GetDelegation(ctx sdk.Context, delegator string) (*types.FeederDelegation, bool) {
+	bz := k.kvStore(ctx).Get(delegationKey(delegator))
+	if bz == nil {
+		return nil, false
+	}
+	var d types.FeederDelegation
+	if err := proto.Unmarshal(bz, &d); err != nil {
+		return nil, false
+	}
+	return &d, true
+}
+
+// GetDelegatorForFeeder returns the delegator address for a given feeder address,
+// or empty string if the feeder is not delegated by anyone.
+func (k Keeper) GetDelegatorForFeeder(ctx sdk.Context, feeder string) string {
+	bz := k.kvStore(ctx).Get(feederReverseKey(feeder))
+	if bz == nil {
+		return ""
+	}
+	return string(bz)
+}
+
+func (k Keeper) RevokeDelegation(ctx sdk.Context, delegator string) {
+	st := k.kvStore(ctx)
+	bz := st.Get(delegationKey(delegator))
+	if bz != nil {
+		var d types.FeederDelegation
+		if err := proto.Unmarshal(bz, &d); err == nil && d.Feeder != "" {
+			st.Delete(feederReverseKey(d.Feeder))
+		}
+	}
+	st.Delete(delegationKey(delegator))
+}
+
+func (k Keeper) GetAllDelegations(ctx sdk.Context) []*types.FeederDelegation {
+	st := k.kvStore(ctx)
+	iter := storetypes.KVStorePrefixIterator(st, []byte(types.FeederDelegationKeyPrefix))
+	defer iter.Close()
+
+	var out []*types.FeederDelegation
+	for ; iter.Valid(); iter.Next() {
+		var d types.FeederDelegation
+		if err := proto.Unmarshal(iter.Value(), &d); err == nil {
+			out = append(out, &d)
+		}
+	}
+	return out
+}
+
 // ── Genesis helpers ──────────────────────────────────────────────────────────
 
 func (k Keeper) ImportGenesis(ctx sdk.Context, gs *types.GenesisState) {
@@ -358,12 +436,16 @@ func (k Keeper) ImportGenesis(ctx sdk.Context, gs *types.GenesisState) {
 		st.Set(addrEventKey(e.Address, e.Id), []byte{1})
 		k.setEventCount(ctx, e.Id)
 	}
+	for _, d := range gs.Delegations {
+		_ = k.SetDelegation(ctx, d.Delegator, d.Feeder)
+	}
 }
 
 func (k Keeper) ExportGenesis(ctx sdk.Context) *types.GenesisState {
 	return &types.GenesisState{
-		Watches:  k.GetAllWatches(ctx),
-		Webhooks: k.GetAllWebhooks(ctx),
-		Events:   k.GetAllEvents(ctx),
+		Watches:     k.GetAllWatches(ctx),
+		Webhooks:    k.GetAllWebhooks(ctx),
+		Events:      k.GetAllEvents(ctx),
+		Delegations: k.GetAllDelegations(ctx),
 	}
 }

@@ -545,6 +545,10 @@ type MsgServer interface {
 	DeleteWebhook(context.Context, *MsgDeleteWebhook) (*MsgDeleteWebhookResponse, error)
 	// SubmitEvent is called by feeders to record an external chain event.
 	SubmitEvent(context.Context, *MsgSubmitEvent) (*MsgSubmitEventResponse, error)
+	// DelegateFeeder authorizes a feeder address to submit events on behalf of the delegator.
+	DelegateFeeder(context.Context, *MsgDelegateFeeder) (*MsgDelegateFeederResponse, error)
+	// RevokeDelegation removes a feeder delegation.
+	RevokeDelegation(context.Context, *MsgRevokeDelegation) (*MsgRevokeDelegationResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -565,6 +569,12 @@ func (*UnimplementedMsgServer) DeleteWebhook(ctx context.Context, req *MsgDelete
 }
 func (*UnimplementedMsgServer) SubmitEvent(ctx context.Context, req *MsgSubmitEvent) (*MsgSubmitEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEvent not implemented")
+}
+func (*UnimplementedMsgServer) DelegateFeeder(ctx context.Context, req *MsgDelegateFeeder) (*MsgDelegateFeederResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelegateFeeder not implemented")
+}
+func (*UnimplementedMsgServer) RevokeDelegation(ctx context.Context, req *MsgRevokeDelegation) (*MsgRevokeDelegationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeDelegation not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -661,6 +671,42 @@ func _Msg_SubmitEvent_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_DelegateFeeder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDelegateFeeder)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DelegateFeeder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Msg/DelegateFeeder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DelegateFeeder(ctx, req.(*MsgDelegateFeeder))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_RevokeDelegation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRevokeDelegation)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RevokeDelegation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Msg/RevokeDelegation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RevokeDelegation(ctx, req.(*MsgRevokeDelegation))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var Msg_serviceDesc = _Msg_serviceDesc
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "mehr.v1.Msg",
@@ -685,6 +731,14 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitEvent",
 			Handler:    _Msg_SubmitEvent_Handler,
+		},
+		{
+			MethodName: "DelegateFeeder",
+			Handler:    _Msg_DelegateFeeder_Handler,
+		},
+		{
+			MethodName: "RevokeDelegation",
+			Handler:    _Msg_RevokeDelegation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

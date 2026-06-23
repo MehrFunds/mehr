@@ -170,9 +170,10 @@ func (m *Webhook) GetSecretHash() string {
 
 // GenesisState is the genesis state of the mehr module.
 type GenesisState struct {
-	Watches  []*Watch   `protobuf:"bytes,1,rep,name=watches,proto3" json:"watches,omitempty"`
-	Webhooks []*Webhook `protobuf:"bytes,2,rep,name=webhooks,proto3" json:"webhooks,omitempty"`
-	Events   []*Event   `protobuf:"bytes,3,rep,name=events,proto3" json:"events,omitempty"`
+	Watches     []*Watch             `protobuf:"bytes,1,rep,name=watches,proto3" json:"watches,omitempty"`
+	Webhooks    []*Webhook           `protobuf:"bytes,2,rep,name=webhooks,proto3" json:"webhooks,omitempty"`
+	Events      []*Event             `protobuf:"bytes,3,rep,name=events,proto3" json:"events,omitempty"`
+	Delegations []*FeederDelegation  `protobuf:"bytes,4,rep,name=delegations,proto3" json:"delegations,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -225,6 +226,13 @@ func (m *GenesisState) GetWebhooks() []*Webhook {
 func (m *GenesisState) GetEvents() []*Event {
 	if m != nil {
 		return m.Events
+	}
+	return nil
+}
+
+func (m *GenesisState) GetDelegations() []*FeederDelegation {
+	if m != nil {
+		return m.Delegations
 	}
 	return nil
 }
@@ -385,6 +393,20 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.Delegations) > 0 {
+		for iNdEx := len(m.Delegations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Delegations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTypes(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
 	if len(m.Events) > 0 {
 		for iNdEx := len(m.Events) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -513,6 +535,12 @@ func (m *GenesisState) Size() (n int) {
 	}
 	if len(m.Events) > 0 {
 		for _, e := range m.Events {
+			l = e.Size()
+			n += 1 + l + sovTypes(uint64(l))
+		}
+	}
+	if len(m.Delegations) > 0 {
+		for _, e := range m.Delegations {
 			l = e.Size()
 			n += 1 + l + sovTypes(uint64(l))
 		}
@@ -1016,6 +1044,40 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			}
 			m.Events = append(m.Events, &Event{})
 			if err := m.Events[len(m.Events)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Delegations", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Delegations = append(m.Delegations, &FeederDelegation{})
+			if err := m.Delegations[len(m.Delegations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

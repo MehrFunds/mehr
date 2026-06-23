@@ -19,4 +19,9 @@ const (
 	EventDedupPrefix = "ed/"
 	// address index: address/event_id → empty
 	EventAddrIndexPrefix = "ea/"
+
+	// feeder delegation: delegator → FeederDelegation
+	FeederDelegationKeyPrefix = "fd/"
+	// reverse index: feeder → delegator address
+	FeederReverseIndexPrefix = "fr/"
 )

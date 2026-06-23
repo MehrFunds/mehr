@@ -454,6 +454,10 @@ type QueryClient interface {
 	Events(ctx context.Context, in *QueryEventsRequest, opts ...grpc.CallOption) (*QueryEventsResponse, error)
 	// Event returns a single event by ID.
 	Event(ctx context.Context, in *QueryEventRequest, opts ...grpc.CallOption) (*QueryEventResponse, error)
+	// FeederDelegation returns the delegation record for a delegator address.
+	FeederDelegation(ctx context.Context, in *QueryFeederDelegationRequest, opts ...grpc.CallOption) (*QueryFeederDelegationResponse, error)
+	// AllDelegations returns all feeder delegations.
+	AllDelegations(ctx context.Context, in *QueryAllDelegationsRequest, opts ...grpc.CallOption) (*QueryAllDelegationsResponse, error)
 }
 
 type queryClient struct {
@@ -536,6 +540,24 @@ func (c *queryClient) Event(ctx context.Context, in *QueryEventRequest, opts ...
 	return out, nil
 }
 
+func (c *queryClient) FeederDelegation(ctx context.Context, in *QueryFeederDelegationRequest, opts ...grpc.CallOption) (*QueryFeederDelegationResponse, error) {
+	out := new(QueryFeederDelegationResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/FeederDelegation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) AllDelegations(ctx context.Context, in *QueryAllDelegationsRequest, opts ...grpc.CallOption) (*QueryAllDelegationsResponse, error) {
+	out := new(QueryAllDelegationsResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllDelegations", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// AllWatches returns every watch across all owners — used by feeders.
@@ -554,6 +576,10 @@ type QueryServer interface {
 	Events(context.Context, *QueryEventsRequest) (*QueryEventsResponse, error)
 	// Event returns a single event by ID.
 	Event(context.Context, *QueryEventRequest) (*QueryEventResponse, error)
+	// FeederDelegation returns the delegation record for a delegator address.
+	FeederDelegation(context.Context, *QueryFeederDelegationRequest) (*QueryFeederDelegationResponse, error)
+	// AllDelegations returns all feeder delegations.
+	AllDelegations(context.Context, *QueryAllDelegationsRequest) (*QueryAllDelegationsResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -583,6 +609,12 @@ func (*UnimplementedQueryServer) Events(ctx context.Context, req *QueryEventsReq
 }
 func (*UnimplementedQueryServer) Event(ctx context.Context, req *QueryEventRequest) (*QueryEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Event not implemented")
+}
+func (*UnimplementedQueryServer) FeederDelegation(ctx context.Context, req *QueryFeederDelegationRequest) (*QueryFeederDelegationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FeederDelegation not implemented")
+}
+func (*UnimplementedQueryServer) AllDelegations(ctx context.Context, req *QueryAllDelegationsRequest) (*QueryAllDelegationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllDelegations not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -733,6 +765,42 @@ func _Query_Event_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_FeederDelegation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryFeederDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).FeederDelegation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/FeederDelegation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).FeederDelegation(ctx, req.(*QueryFeederDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_AllDelegations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllDelegationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AllDelegations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/AllDelegations",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AllDelegations(ctx, req.(*QueryAllDelegationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var Query_serviceDesc = _Query_serviceDesc
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "mehr.v1.Query",
@@ -769,6 +837,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Event",
 			Handler:    _Query_Event_Handler,
+		},
+		{
+			MethodName: "FeederDelegation",
+			Handler:    _Query_FeederDelegation_Handler,
+		},
+		{
+			MethodName: "AllDelegations",
+			Handler:    _Query_AllDelegations_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

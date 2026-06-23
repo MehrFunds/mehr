@@ -68,3 +68,17 @@ func (q QueryServer) Event(goCtx context.Context, req *types.QueryEventRequest) 
 	}
 	return &types.QueryEventResponse{Event: e}, nil
 }
+
+func (q QueryServer) FeederDelegation(goCtx context.Context, req *types.QueryFeederDelegationRequest) (*types.QueryFeederDelegationResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	d, ok := q.Keeper.GetDelegation(ctx, req.Delegator)
+	if !ok {
+		return nil, types.ErrDelegationNotFound
+	}
+	return &types.QueryFeederDelegationResponse{Delegation: d}, nil
+}
+
+func (q QueryServer) AllDelegations(goCtx context.Context, _ *types.QueryAllDelegationsRequest) (*types.QueryAllDelegationsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryAllDelegationsResponse{Delegations: q.Keeper.GetAllDelegations(ctx)}, nil
+}
