@@ -7,10 +7,15 @@ set -e
 REPO="MehrFunds/mehr"
 CHAIN_ID="mehr-1"
 BINARY="mehrd"
-NODE_HOME="${HOME}/.mehr"
+MEHR_DIR="/opt/mehr"
+BIN_DIR="${MEHR_DIR}/bin"
+NODE_HOME="${MEHR_DIR}/data"
+LOG_DIR="${MEHR_DIR}/logs"
+LOG_FILE="${LOG_DIR}/mehrd.log"
+FEEDER_DIR="${MEHR_DIR}/feeder"
 REST_URL="http://localhost:1317"
 SERVICE_NAME="mehrd"
-LOG_FILE="${NODE_HOME}/mehrd.log"
+SERVICE_USER="mehr"
 PID_FILE="/tmp/mehrd.pid"
 
 # ── platform detection ────────────────────────────────────────────────────────
@@ -59,7 +64,32 @@ http_get() {
 }
 
 mehrd_bin() {
-  command -v "$BINARY" 2>/dev/null || printf "%s" "${BIN_DIR:-/usr/local/bin}/${BINARY}${EXT:-}"
+  printf "%s" "${BIN_DIR}/${BINARY}${EXT:-}"
+}
+
+# ── directory setup ───────────────────────────────────────────────────────────
+
+setup_dirs() {
+  say "Setting up /opt/mehr directory structure (needs sudo)..."
+  sudo mkdir -p \
+    "${BIN_DIR}" \
+    "${NODE_HOME}" \
+    "${LOG_DIR}" \
+    "${FEEDER_DIR}/inbox" \
+    "${FEEDER_DIR}/processed" \
+    "${FEEDER_DIR}/failed"
+
+  # Create dedicated system user if it doesn't exist
+  if ! id -u "$SERVICE_USER" > /dev/null 2>&1; then
+    sudo useradd --system --no-create-home --shell /sbin/nologin "$SERVICE_USER"
+    say "Created system user '${SERVICE_USER}'."
+  fi
+
+  sudo chown -R "${SERVICE_USER}:${SERVICE_USER}" "${MEHR_DIR}"
+  sudo chmod 755 "${MEHR_DIR}" "${BIN_DIR}"
+  sudo chmod 700 "${NODE_HOME}"
+  sudo chmod 755 "${LOG_DIR}" "${FEEDER_DIR}" \
+    "${FEEDER_DIR}/inbox" "${FEEDER_DIR}/processed" "${FEEDER_DIR}/failed"
 }
 
 # ── install binary ────────────────────────────────────────────────────────────
@@ -69,27 +99,22 @@ install_binary() {
   ASSET="${BINARY}-${OS}-${ARCH}${EXT}"
   URL="https://github.com/${REPO}/releases/latest/download/${ASSET}"
 
-  if [ "$OS" = "windows" ]; then
-    BIN_DIR="${HOME}/.local/bin"
-    mkdir -p "$BIN_DIR"
-  elif [ -w /usr/local/bin ]; then
-    BIN_DIR="/usr/local/bin"
-  elif [ -w /usr/bin ]; then
-    BIN_DIR="/usr/bin"
-  else
-    BIN_DIR="${HOME}/.local/bin"
-    mkdir -p "$BIN_DIR"
-  fi
+  setup_dirs
 
+  DEST="${BIN_DIR}/${BINARY}${EXT}"
+  TMP=$(mktemp)
   say "Downloading ${ASSET}..."
-  http_get "$URL" "${BIN_DIR}/${BINARY}${EXT}"
-  [ "$OS" != "windows" ] && chmod +x "${BIN_DIR}/${BINARY}${EXT}"
-  say "Installed ${BIN_DIR}/${BINARY}${EXT}"
+  http_get "$URL" "$TMP"
+  sudo mv "$TMP" "$DEST"
+  sudo chmod +x "$DEST"
+  sudo chown "${SERVICE_USER}:${SERVICE_USER}" "$DEST"
+  say "Installed ${DEST}"
 
-  case ":${PATH}:" in
-    *":${BIN_DIR}:"*) ;;
-    *) say "  Add ${BIN_DIR} to your PATH: export PATH=\"\$PATH:${BIN_DIR}\"" ;;
-  esac
+  # Convenience symlink so operators can run mehrd from their shell
+  if [ -w /usr/local/bin ] || sudo test -d /usr/local/bin; then
+    sudo ln -sf "$DEST" "/usr/local/bin/${BINARY}" 2>/dev/null || true
+    say "Symlinked /usr/local/bin/${BINARY} → ${DEST}"
+  fi
 }
 
 # ── node init ─────────────────────────────────────────────────────────────────
@@ -98,15 +123,17 @@ cmd_init() {
   if [ -d "${NODE_HOME}/config" ]; then
     say "Node already initialized at ${NODE_HOME}"
     ask "Re-initialize? This will erase all data. [y/N]:"
-    case "$REPLY" in y|Y) rm -rf "$NODE_HOME" ;; *) return ;; esac
+    case "$REPLY" in y|Y) sudo rm -rf "${NODE_HOME:?}"/* ;; *) return ;; esac
   fi
 
   ask "Moniker (display name for your node):"; MONIKER="${REPLY:-my-node}"
 
-  "$(mehrd_bin)" init "$MONIKER" --chain-id "$CHAIN_ID"
+  sudo -u "$SERVICE_USER" "$(mehrd_bin)" init "$MONIKER" \
+    --chain-id "$CHAIN_ID" \
+    --home "$NODE_HOME"
   say ""
   say "Node initialized. Config is at ${NODE_HOME}/config/"
-  say "Edit app.toml and config.toml before starting."
+  say "Edit ${NODE_HOME}/config/app.toml and config.toml before starting."
 }
 
 # ── systemd service ───────────────────────────────────────────────────────────
@@ -128,20 +155,24 @@ cmd_install_service() {
     say "systemd not available — use Start/Stop options to run in background."
     return
   fi
-  BIN_PATH=$(mehrd_bin)
   SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
   say "Writing ${SERVICE_FILE} (needs sudo)..."
   sudo tee "$SERVICE_FILE" > /dev/null << EOF
 [Unit]
 Description=Mehr Daemon
 After=network-online.target
+Wants=network-online.target
 
 [Service]
-User=${USER}
-ExecStart=${BIN_PATH} start
+User=${SERVICE_USER}
+Group=${SERVICE_USER}
+WorkingDirectory=${MEHR_DIR}
+ExecStart=${BIN_DIR}/${BINARY} start --home ${NODE_HOME}
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65536
+StandardOutput=append:${LOG_FILE}
+StandardError=append:${LOG_FILE}
 
 [Install]
 WantedBy=multi-user.target
@@ -167,9 +198,9 @@ cmd_start() {
     say "mehrd is already running (PID $(cat "$PID_FILE"))."
     return
   fi
-  mkdir -p "$(dirname "$LOG_FILE")"
-  BIN_PATH=$(mehrd_bin)
-  nohup "$BIN_PATH" start >> "$LOG_FILE" 2>&1 &
+  sudo mkdir -p "$LOG_DIR"
+  nohup sudo -u "$SERVICE_USER" "$(mehrd_bin)" start --home "$NODE_HOME" \
+    >> "$LOG_FILE" 2>&1 &
   printf "%s" "$!" > "$PID_FILE"
   say "Started mehrd (PID $(cat "$PID_FILE")), logging to ${LOG_FILE}."
 }
@@ -230,6 +261,8 @@ panel() {
   while true; do
     printf "\n============================================\n"
     printf "  Mehr Daemon Admin\n"
+    printf "  Binary : %s\n" "$(mehrd_bin)"
+    printf "  Home   : %s\n" "$NODE_HOME"
     printf "============================================\n"
     print_status
     printf "--------------------------------------------\n"
@@ -261,8 +294,7 @@ panel() {
 # ── main ──────────────────────────────────────────────────────────────────────
 
 main() {
-  # Skip install if already available and up to date
-  if ! command -v "$BINARY" > /dev/null 2>&1; then
+  if [ ! -f "$(mehrd_bin)" ]; then
     install_binary
   else
     say "Found $(mehrd_bin) — skipping download. Use option 6 to update."
