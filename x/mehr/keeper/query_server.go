@@ -17,18 +17,56 @@ func NewQueryServer(k Keeper) QueryServer {
 	return QueryServer{Keeper: k}
 }
 
-func (q QueryServer) Watches(goCtx context.Context, req *types.QueryWatchesRequest) (*types.QueryWatchesResponse, error) {
+func (q QueryServer) Feed(goCtx context.Context, req *types.QueryFeedRequest) (*types.QueryFeedResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	return &types.QueryWatchesResponse{Watches: q.Keeper.GetWatchesByOwner(ctx, req.Owner)}, nil
+	f, ok := q.Keeper.GetFeed(ctx, req.Id)
+	if !ok {
+		return nil, types.ErrFeedNotFound
+	}
+	return &types.QueryFeedResponse{Feed: f}, nil
 }
 
-func (q QueryServer) Watch(goCtx context.Context, req *types.QueryWatchRequest) (*types.QueryWatchResponse, error) {
+func (q QueryServer) AllFeeds(goCtx context.Context, _ *types.QueryAllFeedsRequest) (*types.QueryAllFeedsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	w, ok := q.Keeper.GetWatch(ctx, req.Id)
+	return &types.QueryAllFeedsResponse{Feeds: q.Keeper.GetAllFeeds(ctx)}, nil
+}
+
+func (q QueryServer) Fact(goCtx context.Context, req *types.QueryFactRequest) (*types.QueryFactResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	f, ok := q.Keeper.GetFact(ctx, req.Id)
 	if !ok {
-		return nil, types.ErrWatchNotFound
+		return nil, types.ErrFactNotFound
 	}
-	return &types.QueryWatchResponse{Watch: w}, nil
+	return &types.QueryFactResponse{Fact: f}, nil
+}
+
+func (q QueryServer) FactsByFeed(goCtx context.Context, req *types.QueryFactsByFeedRequest) (*types.QueryFactsByFeedResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryFactsByFeedResponse{Facts: q.Keeper.GetFactsByFeed(ctx, req.FeedId)}, nil
+}
+
+func (q QueryServer) Subscription(goCtx context.Context, req *types.QuerySubscriptionRequest) (*types.QuerySubscriptionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	s, ok := q.Keeper.GetSubscription(ctx, req.Id)
+	if !ok {
+		return nil, types.ErrSubscriptionNotFound
+	}
+	return &types.QuerySubscriptionResponse{Subscription: s}, nil
+}
+
+func (q QueryServer) SubscriptionsByOwner(goCtx context.Context, req *types.QuerySubscriptionsByOwnerRequest) (*types.QuerySubscriptionsByOwnerResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QuerySubscriptionsByOwnerResponse{Subscriptions: q.Keeper.GetSubscriptionsByOwner(ctx, req.Owner)}, nil
+}
+
+func (q QueryServer) AllSubscriptions(goCtx context.Context, _ *types.QueryAllSubscriptionsRequest) (*types.QueryAllSubscriptionsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryAllSubscriptionsResponse{Subscriptions: q.Keeper.GetAllSubscriptions(ctx)}, nil
+}
+
+func (q QueryServer) AllWebhooks(goCtx context.Context, _ *types.QueryAllWebhooksRequest) (*types.QueryAllWebhooksResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryAllWebhooksResponse{Webhooks: q.Keeper.GetAllWebhooks(ctx)}, nil
 }
 
 func (q QueryServer) Webhooks(goCtx context.Context, req *types.QueryWebhooksRequest) (*types.QueryWebhooksResponse, error) {
@@ -43,30 +81,6 @@ func (q QueryServer) Webhook(goCtx context.Context, req *types.QueryWebhookReque
 		return nil, types.ErrWebhookNotFound
 	}
 	return &types.QueryWebhookResponse{Webhook: wh}, nil
-}
-
-func (q QueryServer) AllWatches(goCtx context.Context, _ *types.QueryAllWatchesRequest) (*types.QueryAllWatchesResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	return &types.QueryAllWatchesResponse{Watches: q.Keeper.GetAllWatches(ctx)}, nil
-}
-
-func (q QueryServer) AllWebhooks(goCtx context.Context, _ *types.QueryAllWebhooksRequest) (*types.QueryAllWebhooksResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	return &types.QueryAllWebhooksResponse{Webhooks: q.Keeper.GetAllWebhooks(ctx)}, nil
-}
-
-func (q QueryServer) Events(goCtx context.Context, req *types.QueryEventsRequest) (*types.QueryEventsResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	return &types.QueryEventsResponse{Events: q.Keeper.GetEventsByAddress(ctx, req.Address)}, nil
-}
-
-func (q QueryServer) Event(goCtx context.Context, req *types.QueryEventRequest) (*types.QueryEventResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	e, ok := q.Keeper.GetEvent(ctx, req.Id)
-	if !ok {
-		return nil, types.ErrEventNotFound
-	}
-	return &types.QueryEventResponse{Event: e}, nil
 }
 
 func (q QueryServer) FeederDelegation(goCtx context.Context, req *types.QueryFeederDelegationRequest) (*types.QueryFeederDelegationResponse, error) {

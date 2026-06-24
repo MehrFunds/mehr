@@ -4,23 +4,26 @@ const (
 	ModuleName = "mehr"
 	StoreKey   = ModuleName
 
-	WatchCountKey    = "wc"
-	WatchKeyPrefix   = "w/"
-	WebhookCountKey  = "whc"
-	WebhookKeyPrefix = "wh/"
+	// Feed: string-keyed
+	FeedKeyPrefix = "f/"
 
-	// secondary index: "<owner>/<id_8bytes>" → empty
-	OwnerWatchIndexPrefix   = "ow/"
+	// Fact: uint64-keyed
+	FactCountKey        = "fac"
+	FactKeyPrefix       = "fa/"
+	FactFeedIndexPrefix = "ff/"
+	FactDedupPrefix     = "fdd/"
+
+	// Subscription: uint64-keyed
+	SubscriptionCountKey        = "sc"
+	SubscriptionKeyPrefix       = "s/"
+	SubscriptionOwnerIndexPrefix = "so/"
+
+	// Webhook: uint64-keyed (unchanged)
+	WebhookCountKey         = "whc"
+	WebhookKeyPrefix        = "wh/"
 	OwnerWebhookIndexPrefix = "owh/"
 
-	EventCountKey   = "ec"
-	EventKeyPrefix  = "e/"
-	// dedup index: network/txhash/logindex → event_id
-	EventDedupPrefix = "ed/"
-	// address index: address/event_id → empty
-	EventAddrIndexPrefix = "ea/"
-
-	// feeder delegation: delegator → FeederDelegation
+	// FeederDelegation: delegator → FeederDelegation
 	FeederDelegationKeyPrefix = "fd/"
 	// reverse index: feeder → delegator address
 	FeederReverseIndexPrefix = "fr/"

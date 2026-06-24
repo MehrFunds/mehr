@@ -8,11 +8,12 @@ import (
 
 func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateWatch{},
-		&MsgDeleteWatch{},
+		&MsgRegisterFeed{},
+		&MsgSubmitFact{},
+		&MsgCreateSubscription{},
+		&MsgDeleteSubscription{},
 		&MsgCreateWebhook{},
 		&MsgDeleteWebhook{},
-		&MsgSubmitEvent{},
 		&MsgDelegateFeeder{},
 		&MsgRevokeDelegation{},
 	)

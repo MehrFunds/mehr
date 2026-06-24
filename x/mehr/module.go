@@ -54,7 +54,22 @@ func (AppModule) RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 }
 
 func (AppModule) DefaultGenesis(_ codec.JSONCodec) json.RawMessage {
-	gs := &types.GenesisState{Watches: []*types.Watch{}, Webhooks: []*types.Webhook{}, Events: []*types.Event{}, Delegations: []*types.FeederDelegation{}}
+	gs := &types.GenesisState{
+		Feeds: []*types.Feed{
+			{
+				Id:          "evm.transfers",
+				Name:        "EVM Transfer Events",
+				Description: "ERC-20 and native transfer events from EVM-compatible chains",
+				SourceType:  "evm",
+				PayloadType: "evm_transfer",
+				CreatedBy:   "genesis",
+			},
+		},
+		Subscriptions: []*types.Subscription{},
+		Facts:         []*types.Fact{},
+		Webhooks:      []*types.Webhook{},
+		Delegations:   []*types.FeederDelegation{},
+	}
 	bz, _ := json.Marshal(gs)
 	return bz
 }

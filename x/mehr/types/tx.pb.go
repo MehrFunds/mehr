@@ -28,205 +28,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgCreateWatch struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Network string `protobuf:"bytes,2,opt,name=network,proto3" json:"network,omitempty"`
-	Address string `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
-	Label   string `protobuf:"bytes,4,opt,name=label,proto3" json:"label,omitempty"`
-}
-
-func (m *MsgCreateWatch) Reset()         { *m = MsgCreateWatch{} }
-func (m *MsgCreateWatch) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateWatch) ProtoMessage()    {}
-func (*MsgCreateWatch) Descriptor() ([]byte, []int) {
-	return fileDescriptor_28a84c52c4df2031, []int{0}
-}
-func (m *MsgCreateWatch) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgCreateWatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgCreateWatch.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgCreateWatch) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateWatch.Merge(m, src)
-}
-func (m *MsgCreateWatch) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgCreateWatch) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateWatch.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgCreateWatch proto.InternalMessageInfo
-
-func (m *MsgCreateWatch) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgCreateWatch) GetNetwork() string {
-	if m != nil {
-		return m.Network
-	}
-	return ""
-}
-
-func (m *MsgCreateWatch) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
-}
-
-func (m *MsgCreateWatch) GetLabel() string {
-	if m != nil {
-		return m.Label
-	}
-	return ""
-}
-
-type MsgCreateWatchResponse struct {
-	Watch *Watch `protobuf:"bytes,1,opt,name=watch,proto3" json:"watch,omitempty"`
-}
-
-func (m *MsgCreateWatchResponse) Reset()         { *m = MsgCreateWatchResponse{} }
-func (m *MsgCreateWatchResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateWatchResponse) ProtoMessage()    {}
-func (*MsgCreateWatchResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_28a84c52c4df2031, []int{1}
-}
-func (m *MsgCreateWatchResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgCreateWatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgCreateWatchResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgCreateWatchResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateWatchResponse.Merge(m, src)
-}
-func (m *MsgCreateWatchResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgCreateWatchResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateWatchResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgCreateWatchResponse proto.InternalMessageInfo
-
-func (m *MsgCreateWatchResponse) GetWatch() *Watch {
-	if m != nil {
-		return m.Watch
-	}
-	return nil
-}
-
-type MsgDeleteWatch struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	WatchId uint64 `protobuf:"varint,2,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
-}
-
-func (m *MsgDeleteWatch) Reset()         { *m = MsgDeleteWatch{} }
-func (m *MsgDeleteWatch) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteWatch) ProtoMessage()    {}
-func (*MsgDeleteWatch) Descriptor() ([]byte, []int) {
-	return fileDescriptor_28a84c52c4df2031, []int{2}
-}
-func (m *MsgDeleteWatch) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgDeleteWatch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgDeleteWatch.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgDeleteWatch) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteWatch.Merge(m, src)
-}
-func (m *MsgDeleteWatch) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgDeleteWatch) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteWatch.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgDeleteWatch proto.InternalMessageInfo
-
-func (m *MsgDeleteWatch) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgDeleteWatch) GetWatchId() uint64 {
-	if m != nil {
-		return m.WatchId
-	}
-	return 0
-}
-
-type MsgDeleteWatchResponse struct {
-}
-
-func (m *MsgDeleteWatchResponse) Reset()         { *m = MsgDeleteWatchResponse{} }
-func (m *MsgDeleteWatchResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteWatchResponse) ProtoMessage()    {}
-func (*MsgDeleteWatchResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_28a84c52c4df2031, []int{3}
-}
-func (m *MsgDeleteWatchResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgDeleteWatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgDeleteWatchResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgDeleteWatchResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteWatchResponse.Merge(m, src)
-}
-func (m *MsgDeleteWatchResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgDeleteWatchResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteWatchResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgDeleteWatchResponse proto.InternalMessageInfo
 
 type MsgCreateWebhook struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -421,10 +222,6 @@ func (m *MsgDeleteWebhookResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgDeleteWebhookResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateWatch)(nil), "mehr.v1.MsgCreateWatch")
-	proto.RegisterType((*MsgCreateWatchResponse)(nil), "mehr.v1.MsgCreateWatchResponse")
-	proto.RegisterType((*MsgDeleteWatch)(nil), "mehr.v1.MsgDeleteWatch")
-	proto.RegisterType((*MsgDeleteWatchResponse)(nil), "mehr.v1.MsgDeleteWatchResponse")
 	proto.RegisterType((*MsgCreateWebhook)(nil), "mehr.v1.MsgCreateWebhook")
 	proto.RegisterType((*MsgCreateWebhookResponse)(nil), "mehr.v1.MsgCreateWebhookResponse")
 	proto.RegisterType((*MsgDeleteWebhook)(nil), "mehr.v1.MsgDeleteWebhook")
@@ -479,14 +276,22 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	// CreateWatch registers a new EVM address watch.
-	CreateWatch(ctx context.Context, in *MsgCreateWatch, opts ...grpc.CallOption) (*MsgCreateWatchResponse, error)
-	// DeleteWatch removes an existing watch (must be owner).
-	DeleteWatch(ctx context.Context, in *MsgDeleteWatch, opts ...grpc.CallOption) (*MsgDeleteWatchResponse, error)
+	// RegisterFeed registers a new data feed.
+	RegisterFeed(ctx context.Context, in *MsgRegisterFeed, opts ...grpc.CallOption) (*MsgRegisterFeedResponse, error)
+	// SubmitFact submits a fact to a feed.
+	SubmitFact(ctx context.Context, in *MsgSubmitFact, opts ...grpc.CallOption) (*MsgSubmitFactResponse, error)
+	// CreateSubscription creates a new subscription to a feed.
+	CreateSubscription(ctx context.Context, in *MsgCreateSubscription, opts ...grpc.CallOption) (*MsgCreateSubscriptionResponse, error)
+	// DeleteSubscription removes an existing subscription (must be owner).
+	DeleteSubscription(ctx context.Context, in *MsgDeleteSubscription, opts ...grpc.CallOption) (*MsgDeleteSubscriptionResponse, error)
 	// CreateWebhook registers a new webhook delivery endpoint.
 	CreateWebhook(ctx context.Context, in *MsgCreateWebhook, opts ...grpc.CallOption) (*MsgCreateWebhookResponse, error)
 	// DeleteWebhook removes an existing webhook (must be owner).
 	DeleteWebhook(ctx context.Context, in *MsgDeleteWebhook, opts ...grpc.CallOption) (*MsgDeleteWebhookResponse, error)
+	// DelegateFeeder authorizes a feeder address to submit facts on behalf of the delegator.
+	DelegateFeeder(ctx context.Context, in *MsgDelegateFeeder, opts ...grpc.CallOption) (*MsgDelegateFeederResponse, error)
+	// RevokeDelegation removes a feeder delegation.
+	RevokeDelegation(ctx context.Context, in *MsgRevokeDelegation, opts ...grpc.CallOption) (*MsgRevokeDelegationResponse, error)
 }
 
 type msgClient struct {
@@ -497,18 +302,36 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) CreateWatch(ctx context.Context, in *MsgCreateWatch, opts ...grpc.CallOption) (*MsgCreateWatchResponse, error) {
-	out := new(MsgCreateWatchResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/CreateWatch", in, out, opts...)
+func (c *msgClient) RegisterFeed(ctx context.Context, in *MsgRegisterFeed, opts ...grpc.CallOption) (*MsgRegisterFeedResponse, error) {
+	out := new(MsgRegisterFeedResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/RegisterFeed", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) DeleteWatch(ctx context.Context, in *MsgDeleteWatch, opts ...grpc.CallOption) (*MsgDeleteWatchResponse, error) {
-	out := new(MsgDeleteWatchResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/DeleteWatch", in, out, opts...)
+func (c *msgClient) SubmitFact(ctx context.Context, in *MsgSubmitFact, opts ...grpc.CallOption) (*MsgSubmitFactResponse, error) {
+	out := new(MsgSubmitFactResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/SubmitFact", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) CreateSubscription(ctx context.Context, in *MsgCreateSubscription, opts ...grpc.CallOption) (*MsgCreateSubscriptionResponse, error) {
+	out := new(MsgCreateSubscriptionResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/CreateSubscription", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteSubscription(ctx context.Context, in *MsgDeleteSubscription, opts ...grpc.CallOption) (*MsgDeleteSubscriptionResponse, error) {
+	out := new(MsgDeleteSubscriptionResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/DeleteSubscription", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -533,19 +356,39 @@ func (c *msgClient) DeleteWebhook(ctx context.Context, in *MsgDeleteWebhook, opt
 	return out, nil
 }
 
+func (c *msgClient) DelegateFeeder(ctx context.Context, in *MsgDelegateFeeder, opts ...grpc.CallOption) (*MsgDelegateFeederResponse, error) {
+	out := new(MsgDelegateFeederResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/DelegateFeeder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RevokeDelegation(ctx context.Context, in *MsgRevokeDelegation, opts ...grpc.CallOption) (*MsgRevokeDelegationResponse, error) {
+	out := new(MsgRevokeDelegationResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Msg/RevokeDelegation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	// CreateWatch registers a new EVM address watch.
-	CreateWatch(context.Context, *MsgCreateWatch) (*MsgCreateWatchResponse, error)
-	// DeleteWatch removes an existing watch (must be owner).
-	DeleteWatch(context.Context, *MsgDeleteWatch) (*MsgDeleteWatchResponse, error)
+	// RegisterFeed registers a new data feed.
+	RegisterFeed(context.Context, *MsgRegisterFeed) (*MsgRegisterFeedResponse, error)
+	// SubmitFact submits a fact to a feed.
+	SubmitFact(context.Context, *MsgSubmitFact) (*MsgSubmitFactResponse, error)
+	// CreateSubscription creates a new subscription to a feed.
+	CreateSubscription(context.Context, *MsgCreateSubscription) (*MsgCreateSubscriptionResponse, error)
+	// DeleteSubscription removes an existing subscription (must be owner).
+	DeleteSubscription(context.Context, *MsgDeleteSubscription) (*MsgDeleteSubscriptionResponse, error)
 	// CreateWebhook registers a new webhook delivery endpoint.
 	CreateWebhook(context.Context, *MsgCreateWebhook) (*MsgCreateWebhookResponse, error)
 	// DeleteWebhook removes an existing webhook (must be owner).
 	DeleteWebhook(context.Context, *MsgDeleteWebhook) (*MsgDeleteWebhookResponse, error)
-	// SubmitEvent is called by feeders to record an external chain event.
-	SubmitEvent(context.Context, *MsgSubmitEvent) (*MsgSubmitEventResponse, error)
-	// DelegateFeeder authorizes a feeder address to submit events on behalf of the delegator.
+	// DelegateFeeder authorizes a feeder address to submit facts on behalf of the delegator.
 	DelegateFeeder(context.Context, *MsgDelegateFeeder) (*MsgDelegateFeederResponse, error)
 	// RevokeDelegation removes a feeder delegation.
 	RevokeDelegation(context.Context, *MsgRevokeDelegation) (*MsgRevokeDelegationResponse, error)
@@ -555,20 +398,23 @@ type MsgServer interface {
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) CreateWatch(ctx context.Context, req *MsgCreateWatch) (*MsgCreateWatchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateWatch not implemented")
+func (*UnimplementedMsgServer) RegisterFeed(ctx context.Context, req *MsgRegisterFeed) (*MsgRegisterFeedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterFeed not implemented")
 }
-func (*UnimplementedMsgServer) DeleteWatch(ctx context.Context, req *MsgDeleteWatch) (*MsgDeleteWatchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteWatch not implemented")
+func (*UnimplementedMsgServer) SubmitFact(ctx context.Context, req *MsgSubmitFact) (*MsgSubmitFactResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitFact not implemented")
+}
+func (*UnimplementedMsgServer) CreateSubscription(ctx context.Context, req *MsgCreateSubscription) (*MsgCreateSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSubscription not implemented")
+}
+func (*UnimplementedMsgServer) DeleteSubscription(ctx context.Context, req *MsgDeleteSubscription) (*MsgDeleteSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSubscription not implemented")
 }
 func (*UnimplementedMsgServer) CreateWebhook(ctx context.Context, req *MsgCreateWebhook) (*MsgCreateWebhookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateWebhook not implemented")
 }
 func (*UnimplementedMsgServer) DeleteWebhook(ctx context.Context, req *MsgDeleteWebhook) (*MsgDeleteWebhookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWebhook not implemented")
-}
-func (*UnimplementedMsgServer) SubmitEvent(ctx context.Context, req *MsgSubmitEvent) (*MsgSubmitEventResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubmitEvent not implemented")
 }
 func (*UnimplementedMsgServer) DelegateFeeder(ctx context.Context, req *MsgDelegateFeeder) (*MsgDelegateFeederResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DelegateFeeder not implemented")
@@ -581,38 +427,74 @@ func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_CreateWatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateWatch)
+func _Msg_RegisterFeed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRegisterFeed)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateWatch(ctx, in)
+		return srv.(MsgServer).RegisterFeed(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mehr.v1.Msg/CreateWatch",
+		FullMethod: "/mehr.v1.Msg/RegisterFeed",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateWatch(ctx, req.(*MsgCreateWatch))
+		return srv.(MsgServer).RegisterFeed(ctx, req.(*MsgRegisterFeed))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_DeleteWatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteWatch)
+func _Msg_SubmitFact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitFact)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).DeleteWatch(ctx, in)
+		return srv.(MsgServer).SubmitFact(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mehr.v1.Msg/DeleteWatch",
+		FullMethod: "/mehr.v1.Msg/SubmitFact",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteWatch(ctx, req.(*MsgDeleteWatch))
+		return srv.(MsgServer).SubmitFact(ctx, req.(*MsgSubmitFact))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_CreateSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateSubscription)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Msg/CreateSubscription",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateSubscription(ctx, req.(*MsgCreateSubscription))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteSubscription)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Msg/DeleteSubscription",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteSubscription(ctx, req.(*MsgDeleteSubscription))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -649,24 +531,6 @@ func _Msg_DeleteWebhook_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).DeleteWebhook(ctx, req.(*MsgDeleteWebhook))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_SubmitEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgSubmitEvent)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).SubmitEvent(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mehr.v1.Msg/SubmitEvent",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).SubmitEvent(ctx, req.(*MsgSubmitEvent))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -713,12 +577,20 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateWatch",
-			Handler:    _Msg_CreateWatch_Handler,
+			MethodName: "RegisterFeed",
+			Handler:    _Msg_RegisterFeed_Handler,
 		},
 		{
-			MethodName: "DeleteWatch",
-			Handler:    _Msg_DeleteWatch_Handler,
+			MethodName: "SubmitFact",
+			Handler:    _Msg_SubmitFact_Handler,
+		},
+		{
+			MethodName: "CreateSubscription",
+			Handler:    _Msg_CreateSubscription_Handler,
+		},
+		{
+			MethodName: "DeleteSubscription",
+			Handler:    _Msg_DeleteSubscription_Handler,
 		},
 		{
 			MethodName: "CreateWebhook",
@@ -727,10 +599,6 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteWebhook",
 			Handler:    _Msg_DeleteWebhook_Handler,
-		},
-		{
-			MethodName: "SubmitEvent",
-			Handler:    _Msg_SubmitEvent_Handler,
 		},
 		{
 			MethodName: "DelegateFeeder",
@@ -743,150 +611,6 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "mehr/v1/tx.proto",
-}
-
-func (m *MsgCreateWatch) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgCreateWatch) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgCreateWatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Label) > 0 {
-		i -= len(m.Label)
-		copy(dAtA[i:], m.Label)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Label)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Network) > 0 {
-		i -= len(m.Network)
-		copy(dAtA[i:], m.Network)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Network)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgCreateWatchResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgCreateWatchResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgCreateWatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Watch != nil {
-		{
-			size, err := m.Watch.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgDeleteWatch) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgDeleteWatch) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgDeleteWatch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.WatchId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.WatchId))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgDeleteWatchResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgDeleteWatchResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgDeleteWatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
 }
 
 func (m *MsgCreateWebhook) Marshal() (dAtA []byte, err error) {
@@ -1037,69 +761,6 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgCreateWatch) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Network)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Address)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Label)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgCreateWatchResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Watch != nil {
-		l = m.Watch.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgDeleteWatch) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.WatchId != 0 {
-		n += 1 + sovTx(uint64(m.WatchId))
-	}
-	return n
-}
-
-func (m *MsgDeleteWatchResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
 func (m *MsgCreateWebhook) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1164,421 +825,6 @@ func sovTx(x uint64) (n int) {
 }
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-func (m *MsgCreateWatch) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateWatch: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateWatch: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Network", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Network = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Label", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Label = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgCreateWatchResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateWatchResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateWatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Watch", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Watch == nil {
-				m.Watch = &Watch{}
-			}
-			if err := m.Watch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgDeleteWatch) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteWatch: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteWatch: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field WatchId", wireType)
-			}
-			m.WatchId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.WatchId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgDeleteWatchResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteWatchResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteWatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
 }
 func (m *MsgCreateWebhook) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)

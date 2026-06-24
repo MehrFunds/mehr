@@ -22,83 +22,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// Watch tracks an EVM address on behalf of a chain account.
-type Watch struct {
-	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Owner   string `protobuf:"bytes,2,opt,name=owner,proto3" json:"owner,omitempty"`
-	Network string `protobuf:"bytes,3,opt,name=network,proto3" json:"network,omitempty"`
-	Address string `protobuf:"bytes,4,opt,name=address,proto3" json:"address,omitempty"`
-	Label   string `protobuf:"bytes,5,opt,name=label,proto3" json:"label,omitempty"`
-}
-
-func (m *Watch) Reset()         { *m = Watch{} }
-func (m *Watch) String() string { return proto.CompactTextString(m) }
-func (*Watch) ProtoMessage()    {}
-func (*Watch) Descriptor() ([]byte, []int) {
-	return fileDescriptor_38aef80cb19bd5f6, []int{0}
-}
-func (m *Watch) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Watch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Watch.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Watch) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Watch.Merge(m, src)
-}
-func (m *Watch) XXX_Size() int {
-	return m.Size()
-}
-func (m *Watch) XXX_DiscardUnknown() {
-	xxx_messageInfo_Watch.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Watch proto.InternalMessageInfo
-
-func (m *Watch) GetId() uint64 {
-	if m != nil {
-		return m.Id
-	}
-	return 0
-}
-
-func (m *Watch) GetOwner() string {
-	if m != nil {
-		return m.Owner
-	}
-	return ""
-}
-
-func (m *Watch) GetNetwork() string {
-	if m != nil {
-		return m.Network
-	}
-	return ""
-}
-
-func (m *Watch) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
-}
-
-func (m *Watch) GetLabel() string {
-	if m != nil {
-		return m.Label
-	}
-	return ""
-}
-
 // Webhook is a delivery endpoint registered by a chain account.
 type Webhook struct {
 	Id         uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -111,7 +34,7 @@ func (m *Webhook) Reset()         { *m = Webhook{} }
 func (m *Webhook) String() string { return proto.CompactTextString(m) }
 func (*Webhook) ProtoMessage()    {}
 func (*Webhook) Descriptor() ([]byte, []int) {
-	return fileDescriptor_38aef80cb19bd5f6, []int{1}
+	return fileDescriptor_38aef80cb19bd5f6, []int{0}
 }
 func (m *Webhook) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -170,17 +93,18 @@ func (m *Webhook) GetSecretHash() string {
 
 // GenesisState is the genesis state of the mehr module.
 type GenesisState struct {
-	Watches     []*Watch             `protobuf:"bytes,1,rep,name=watches,proto3" json:"watches,omitempty"`
-	Webhooks    []*Webhook           `protobuf:"bytes,2,rep,name=webhooks,proto3" json:"webhooks,omitempty"`
-	Events      []*Event             `protobuf:"bytes,3,rep,name=events,proto3" json:"events,omitempty"`
-	Delegations []*FeederDelegation  `protobuf:"bytes,4,rep,name=delegations,proto3" json:"delegations,omitempty"`
+	Feeds         []*Feed             `protobuf:"bytes,1,rep,name=feeds,proto3" json:"feeds,omitempty"`
+	Subscriptions []*Subscription     `protobuf:"bytes,2,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
+	Facts         []*Fact             `protobuf:"bytes,3,rep,name=facts,proto3" json:"facts,omitempty"`
+	Webhooks      []*Webhook          `protobuf:"bytes,4,rep,name=webhooks,proto3" json:"webhooks,omitempty"`
+	Delegations   []*FeederDelegation `protobuf:"bytes,5,rep,name=delegations,proto3" json:"delegations,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
 func (m *GenesisState) String() string { return proto.CompactTextString(m) }
 func (*GenesisState) ProtoMessage()    {}
 func (*GenesisState) Descriptor() ([]byte, []int) {
-	return fileDescriptor_38aef80cb19bd5f6, []int{2}
+	return fileDescriptor_38aef80cb19bd5f6, []int{1}
 }
 func (m *GenesisState) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -209,9 +133,23 @@ func (m *GenesisState) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GenesisState proto.InternalMessageInfo
 
-func (m *GenesisState) GetWatches() []*Watch {
+func (m *GenesisState) GetFeeds() []*Feed {
 	if m != nil {
-		return m.Watches
+		return m.Feeds
+	}
+	return nil
+}
+
+func (m *GenesisState) GetSubscriptions() []*Subscription {
+	if m != nil {
+		return m.Subscriptions
+	}
+	return nil
+}
+
+func (m *GenesisState) GetFacts() []*Fact {
+	if m != nil {
+		return m.Facts
 	}
 	return nil
 }
@@ -219,13 +157,6 @@ func (m *GenesisState) GetWatches() []*Watch {
 func (m *GenesisState) GetWebhooks() []*Webhook {
 	if m != nil {
 		return m.Webhooks
-	}
-	return nil
-}
-
-func (m *GenesisState) GetEvents() []*Event {
-	if m != nil {
-		return m.Events
 	}
 	return nil
 }
@@ -238,7 +169,6 @@ func (m *GenesisState) GetDelegations() []*FeederDelegation {
 }
 
 func init() {
-	proto.RegisterType((*Watch)(nil), "mehr.v1.Watch")
 	proto.RegisterType((*Webhook)(nil), "mehr.v1.Webhook")
 	proto.RegisterType((*GenesisState)(nil), "mehr.v1.GenesisState")
 }
@@ -246,82 +176,9 @@ func init() {
 func init() { proto.RegisterFile("mehr/v1/types.proto", fileDescriptor_38aef80cb19bd5f6) }
 
 var fileDescriptor_38aef80cb19bd5f6 = []byte{
-	// 303 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x51, 0xbd, 0x4e, 0xf3, 0x30,
-	0x14, 0xad, 0xd3, 0xf6, 0xcb, 0xc7, 0x2d, 0xaa, 0x2a, 0xc3, 0xe0, 0x29, 0x54, 0x1d, 0x50, 0x06,
-	0x94, 0xa8, 0xf0, 0x02, 0x88, 0x05, 0xe6, 0x30, 0x54, 0x62, 0x41, 0x49, 0x7d, 0x8b, 0xa3, 0xb6,
-	0x71, 0x65, 0xbb, 0x0d, 0xbc, 0x05, 0x8f, 0xc5, 0xd8, 0x91, 0x11, 0x35, 0x2f, 0x82, 0x6c, 0xa7,
-	0xb0, 0xb2, 0xf9, 0xfc, 0xf8, 0x1e, 0xfb, 0x1e, 0x38, 0x5b, 0xa3, 0x50, 0xe9, 0x6e, 0x9a, 0x9a,
-	0xb7, 0x0d, 0xea, 0x64, 0xa3, 0xa4, 0x91, 0x34, 0xb4, 0x64, 0xb2, 0x9b, 0x4e, 0x6a, 0xe8, 0xcf,
-	0x72, 0x33, 0x17, 0x74, 0x08, 0x41, 0xc9, 0x19, 0x19, 0x93, 0xb8, 0x97, 0x05, 0x25, 0xa7, 0xe7,
-	0xd0, 0x97, 0x75, 0x85, 0x8a, 0x05, 0x63, 0x12, 0x9f, 0x64, 0x1e, 0x50, 0x06, 0x61, 0x85, 0xa6,
-	0x96, 0x6a, 0xc9, 0xba, 0x8e, 0x3f, 0x42, 0xab, 0xe4, 0x9c, 0x2b, 0xd4, 0x9a, 0xf5, 0xbc, 0xd2,
-	0x42, 0x3b, 0x69, 0x95, 0x17, 0xb8, 0x62, 0x7d, 0x3f, 0xc9, 0x81, 0x49, 0x01, 0xe1, 0x0c, 0x0b,
-	0x21, 0xe5, 0xf2, 0x8f, 0xd1, 0x23, 0xe8, 0x6e, 0xd5, 0xaa, 0x8d, 0xb5, 0x47, 0x7a, 0x01, 0x03,
-	0x8d, 0x73, 0x85, 0xe6, 0x59, 0xe4, 0x5a, 0xb4, 0xb1, 0xe0, 0xa9, 0x87, 0x5c, 0x8b, 0xc9, 0x02,
-	0x4e, 0xef, 0xb1, 0x42, 0x5d, 0xea, 0x47, 0x93, 0x1b, 0xa4, 0x31, 0x84, 0xb5, 0xfd, 0x2c, 0x6a,
-	0x46, 0xc6, 0xdd, 0x78, 0x70, 0x3d, 0x4c, 0xda, 0x3d, 0x24, 0x6e, 0x09, 0xd9, 0x51, 0xa6, 0x57,
-	0xf0, 0xbf, 0xf6, 0xaf, 0xd3, 0x2c, 0x70, 0xd6, 0xd1, 0xaf, 0xd5, 0x0b, 0xd9, 0x8f, 0xe3, 0xee,
-	0xf6, 0xe3, 0x10, 0x91, 0xfd, 0x21, 0x22, 0x5f, 0x87, 0x88, 0xbc, 0x37, 0x51, 0x67, 0xdf, 0x44,
-	0x9d, 0xcf, 0x26, 0xea, 0x3c, 0x5d, 0xbe, 0x94, 0x46, 0x6c, 0x8b, 0x64, 0x2e, 0xd7, 0xa9, 0xbd,
-	0xbf, 0xd8, 0x56, 0x5c, 0xa7, 0x95, 0xe4, 0x98, 0xbe, 0x3a, 0xc2, 0xb7, 0x52, 0xfc, 0x73, 0xb5,
-	0xdc, 0x7c, 0x07, 0x00, 0x00, 0xff, 0xff, 0x64, 0x44, 0xfc, 0x70, 0xad, 0x01, 0x00, 0x00,
-}
-
-func (m *Watch) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *Watch) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Watch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Label) > 0 {
-		i -= len(m.Label)
-		copy(dAtA[i:], m.Label)
-		i = encodeVarintTypes(dAtA, i, uint64(len(m.Label)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintTypes(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Network) > 0 {
-		i -= len(m.Network)
-		copy(dAtA[i:], m.Network)
-		i = encodeVarintTypes(dAtA, i, uint64(len(m.Network)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Owner) > 0 {
-		i -= len(m.Owner)
-		copy(dAtA[i:], m.Owner)
-		i = encodeVarintTypes(dAtA, i, uint64(len(m.Owner)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.Id != 0 {
-		i = encodeVarintTypes(dAtA, i, uint64(m.Id))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
+	// Placeholder — file descriptor not used at runtime for hand-written pb files.
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x01, 0x00, 0x00, 0xff, 0xff, 0x00,
+	0x00, 0x00, 0x00, 0x00,
 }
 
 func (m *Webhook) Marshal() (dAtA []byte, err error) {
@@ -393,6 +250,7 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	// field 5: Delegations
 	if len(m.Delegations) > 0 {
 		for iNdEx := len(m.Delegations) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -404,23 +262,10 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintTypes(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x22
+			dAtA[i] = 0x2a
 		}
 	}
-	if len(m.Events) > 0 {
-		for iNdEx := len(m.Events) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Events[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintTypes(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1a
-		}
-	}
+	// field 4: Webhooks
 	if len(m.Webhooks) > 0 {
 		for iNdEx := len(m.Webhooks) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -432,13 +277,44 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintTypes(dAtA, i, uint64(size))
 			}
 			i--
+			dAtA[i] = 0x22
+		}
+	}
+	// field 3: Facts
+	if len(m.Facts) > 0 {
+		for iNdEx := len(m.Facts) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Facts[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTypes(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	// field 2: Subscriptions
+	if len(m.Subscriptions) > 0 {
+		for iNdEx := len(m.Subscriptions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Subscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTypes(dAtA, i, uint64(size))
+			}
+			i--
 			dAtA[i] = 0x12
 		}
 	}
-	if len(m.Watches) > 0 {
-		for iNdEx := len(m.Watches) - 1; iNdEx >= 0; iNdEx-- {
+	// field 1: Feeds
+	if len(m.Feeds) > 0 {
+		for iNdEx := len(m.Feeds) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Watches[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Feeds[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -462,33 +338,6 @@ func encodeVarintTypes(dAtA []byte, offset int, v uint64) int {
 	}
 	dAtA[offset] = uint8(v)
 	return base
-}
-func (m *Watch) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Id != 0 {
-		n += 1 + sovTypes(uint64(m.Id))
-	}
-	l = len(m.Owner)
-	if l > 0 {
-		n += 1 + l + sovTypes(uint64(l))
-	}
-	l = len(m.Network)
-	if l > 0 {
-		n += 1 + l + sovTypes(uint64(l))
-	}
-	l = len(m.Address)
-	if l > 0 {
-		n += 1 + l + sovTypes(uint64(l))
-	}
-	l = len(m.Label)
-	if l > 0 {
-		n += 1 + l + sovTypes(uint64(l))
-	}
-	return n
 }
 
 func (m *Webhook) Size() (n int) {
@@ -521,20 +370,26 @@ func (m *GenesisState) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.Watches) > 0 {
-		for _, e := range m.Watches {
+	if len(m.Feeds) > 0 {
+		for _, e := range m.Feeds {
+			l = e.Size()
+			n += 1 + l + sovTypes(uint64(l))
+		}
+	}
+	if len(m.Subscriptions) > 0 {
+		for _, e := range m.Subscriptions {
+			l = e.Size()
+			n += 1 + l + sovTypes(uint64(l))
+		}
+	}
+	if len(m.Facts) > 0 {
+		for _, e := range m.Facts {
 			l = e.Size()
 			n += 1 + l + sovTypes(uint64(l))
 		}
 	}
 	if len(m.Webhooks) > 0 {
 		for _, e := range m.Webhooks {
-			l = e.Size()
-			n += 1 + l + sovTypes(uint64(l))
-		}
-	}
-	if len(m.Events) > 0 {
-		for _, e := range m.Events {
 			l = e.Size()
 			n += 1 + l + sovTypes(uint64(l))
 		}
@@ -554,203 +409,7 @@ func sovTypes(x uint64) (n int) {
 func sozTypes(x uint64) (n int) {
 	return sovTypes(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *Watch) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTypes
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Watch: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Watch: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
-			}
-			m.Id = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTypes
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Id |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Owner", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTypes
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTypes
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTypes
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Owner = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Network", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTypes
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTypes
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTypes
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Network = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTypes
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTypes
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTypes
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Label", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTypes
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTypes
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTypes
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Label = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTypes(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTypes
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
 
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *Webhook) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -916,6 +575,7 @@ func (m *Webhook) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *GenesisState) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -947,7 +607,7 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Watches", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Feeds", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -974,12 +634,80 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Watches = append(m.Watches, &Watch{})
-			if err := m.Watches[len(m.Watches)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Feeds = append(m.Feeds, &Feed{})
+			if err := m.Feeds[len(m.Feeds)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Subscriptions", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Subscriptions = append(m.Subscriptions, &Subscription{})
+			if err := m.Subscriptions[len(m.Subscriptions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Facts", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Facts = append(m.Facts, &Fact{})
+			if err := m.Facts[len(m.Facts)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Webhooks", wireType)
 			}
@@ -1013,41 +741,7 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Events", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTypes
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTypes
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTypes
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Events = append(m.Events, &Event{})
-			if err := m.Events[len(m.Events)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Delegations", wireType)
 			}
@@ -1102,6 +796,7 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skipTypes(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

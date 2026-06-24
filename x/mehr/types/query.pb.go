@@ -28,182 +28,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type QueryWatchesRequest struct {
-	Owner string `protobuf:"bytes,1,opt,name=owner,proto3" json:"owner,omitempty"`
-}
-
-func (m *QueryWatchesRequest) Reset()         { *m = QueryWatchesRequest{} }
-func (m *QueryWatchesRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryWatchesRequest) ProtoMessage()    {}
-func (*QueryWatchesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{0}
-}
-func (m *QueryWatchesRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryWatchesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryWatchesRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryWatchesRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWatchesRequest.Merge(m, src)
-}
-func (m *QueryWatchesRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryWatchesRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWatchesRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryWatchesRequest proto.InternalMessageInfo
-
-func (m *QueryWatchesRequest) GetOwner() string {
-	if m != nil {
-		return m.Owner
-	}
-	return ""
-}
-
-type QueryWatchesResponse struct {
-	Watches []*Watch `protobuf:"bytes,1,rep,name=watches,proto3" json:"watches,omitempty"`
-}
-
-func (m *QueryWatchesResponse) Reset()         { *m = QueryWatchesResponse{} }
-func (m *QueryWatchesResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryWatchesResponse) ProtoMessage()    {}
-func (*QueryWatchesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{1}
-}
-func (m *QueryWatchesResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryWatchesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryWatchesResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryWatchesResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWatchesResponse.Merge(m, src)
-}
-func (m *QueryWatchesResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryWatchesResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWatchesResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryWatchesResponse proto.InternalMessageInfo
-
-func (m *QueryWatchesResponse) GetWatches() []*Watch {
-	if m != nil {
-		return m.Watches
-	}
-	return nil
-}
-
-type QueryWatchRequest struct {
-	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-}
-
-func (m *QueryWatchRequest) Reset()         { *m = QueryWatchRequest{} }
-func (m *QueryWatchRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryWatchRequest) ProtoMessage()    {}
-func (*QueryWatchRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{2}
-}
-func (m *QueryWatchRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryWatchRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryWatchRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryWatchRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWatchRequest.Merge(m, src)
-}
-func (m *QueryWatchRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryWatchRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWatchRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryWatchRequest proto.InternalMessageInfo
-
-func (m *QueryWatchRequest) GetId() uint64 {
-	if m != nil {
-		return m.Id
-	}
-	return 0
-}
-
-type QueryWatchResponse struct {
-	Watch *Watch `protobuf:"bytes,1,opt,name=watch,proto3" json:"watch,omitempty"`
-}
-
-func (m *QueryWatchResponse) Reset()         { *m = QueryWatchResponse{} }
-func (m *QueryWatchResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryWatchResponse) ProtoMessage()    {}
-func (*QueryWatchResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{3}
-}
-func (m *QueryWatchResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryWatchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryWatchResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryWatchResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWatchResponse.Merge(m, src)
-}
-func (m *QueryWatchResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryWatchResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWatchResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryWatchResponse proto.InternalMessageInfo
-
-func (m *QueryWatchResponse) GetWatch() *Watch {
-	if m != nil {
-		return m.Watch
-	}
-	return nil
-}
-
 type QueryWebhooksRequest struct {
 	Owner string `protobuf:"bytes,1,opt,name=owner,proto3" json:"owner,omitempty"`
 }
@@ -212,7 +36,7 @@ func (m *QueryWebhooksRequest) Reset()         { *m = QueryWebhooksRequest{} }
 func (m *QueryWebhooksRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryWebhooksRequest) ProtoMessage()    {}
 func (*QueryWebhooksRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{4}
+	return fileDescriptor_9fd53211bfbb7f62, []int{0}
 }
 func (m *QueryWebhooksRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -256,7 +80,7 @@ func (m *QueryWebhooksResponse) Reset()         { *m = QueryWebhooksResponse{} }
 func (m *QueryWebhooksResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryWebhooksResponse) ProtoMessage()    {}
 func (*QueryWebhooksResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{5}
+	return fileDescriptor_9fd53211bfbb7f62, []int{1}
 }
 func (m *QueryWebhooksResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -300,7 +124,7 @@ func (m *QueryWebhookRequest) Reset()         { *m = QueryWebhookRequest{} }
 func (m *QueryWebhookRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryWebhookRequest) ProtoMessage()    {}
 func (*QueryWebhookRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{6}
+	return fileDescriptor_9fd53211bfbb7f62, []int{2}
 }
 func (m *QueryWebhookRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -344,7 +168,7 @@ func (m *QueryWebhookResponse) Reset()         { *m = QueryWebhookResponse{} }
 func (m *QueryWebhookResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryWebhookResponse) ProtoMessage()    {}
 func (*QueryWebhookResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9fd53211bfbb7f62, []int{7}
+	return fileDescriptor_9fd53211bfbb7f62, []int{3}
 }
 func (m *QueryWebhookResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -380,50 +204,100 @@ func (m *QueryWebhookResponse) GetWebhook() *Webhook {
 	return nil
 }
 
+type QueryAllWebhooksRequest struct{}
+
+func (m *QueryAllWebhooksRequest) Reset()         { *m = QueryAllWebhooksRequest{} }
+func (m *QueryAllWebhooksRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllWebhooksRequest) ProtoMessage()    {}
+func (*QueryAllWebhooksRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9fd53211bfbb7f62, []int{4}
+}
+func (m *QueryAllWebhooksRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllWebhooksRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllWebhooksRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllWebhooksRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllWebhooksRequest.Merge(m, src)
+}
+func (m *QueryAllWebhooksRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllWebhooksRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllWebhooksRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllWebhooksRequest proto.InternalMessageInfo
+
+type QueryAllWebhooksResponse struct {
+	Webhooks []*Webhook `protobuf:"bytes,1,rep,name=webhooks,proto3" json:"webhooks,omitempty"`
+}
+
+func (m *QueryAllWebhooksResponse) Reset()         { *m = QueryAllWebhooksResponse{} }
+func (m *QueryAllWebhooksResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllWebhooksResponse) ProtoMessage()    {}
+func (*QueryAllWebhooksResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9fd53211bfbb7f62, []int{5}
+}
+func (m *QueryAllWebhooksResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllWebhooksResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllWebhooksResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllWebhooksResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllWebhooksResponse.Merge(m, src)
+}
+func (m *QueryAllWebhooksResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllWebhooksResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllWebhooksResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllWebhooksResponse proto.InternalMessageInfo
+
+func (m *QueryAllWebhooksResponse) GetWebhooks() []*Webhook {
+	if m != nil {
+		return m.Webhooks
+	}
+	return nil
+}
+
 func init() {
-	proto.RegisterType((*QueryWatchesRequest)(nil), "mehr.v1.QueryWatchesRequest")
-	proto.RegisterType((*QueryWatchesResponse)(nil), "mehr.v1.QueryWatchesResponse")
-	proto.RegisterType((*QueryWatchRequest)(nil), "mehr.v1.QueryWatchRequest")
-	proto.RegisterType((*QueryWatchResponse)(nil), "mehr.v1.QueryWatchResponse")
 	proto.RegisterType((*QueryWebhooksRequest)(nil), "mehr.v1.QueryWebhooksRequest")
 	proto.RegisterType((*QueryWebhooksResponse)(nil), "mehr.v1.QueryWebhooksResponse")
 	proto.RegisterType((*QueryWebhookRequest)(nil), "mehr.v1.QueryWebhookRequest")
 	proto.RegisterType((*QueryWebhookResponse)(nil), "mehr.v1.QueryWebhookResponse")
+	proto.RegisterType((*QueryAllWebhooksRequest)(nil), "mehr.v1.QueryAllWebhooksRequest")
+	proto.RegisterType((*QueryAllWebhooksResponse)(nil), "mehr.v1.QueryAllWebhooksResponse")
 }
 
 func init() { proto.RegisterFile("mehr/v1/query.proto", fileDescriptor_9fd53211bfbb7f62) }
 
 var fileDescriptor_9fd53211bfbb7f62 = []byte{
-	// 453 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x93, 0xcd, 0x8e, 0xd2, 0x50,
-	0x14, 0xc7, 0x29, 0x63, 0xed, 0x78, 0x4c, 0x26, 0x7a, 0x19, 0x22, 0x96, 0xa1, 0xc1, 0xfa, 0x11,
-	0xa2, 0x93, 0xde, 0x0c, 0xee, 0x5c, 0x11, 0x12, 0x1f, 0xc0, 0x6e, 0x4c, 0x4c, 0x5c, 0x14, 0x7a,
-	0xa5, 0x8d, 0xd0, 0x5b, 0xfa, 0x01, 0x12, 0xc2, 0xc6, 0x27, 0x30, 0xf1, 0x19, 0x7c, 0x17, 0x97,
-	0x24, 0x6e, 0x5c, 0x1a, 0xf0, 0x41, 0x0c, 0xb7, 0xe7, 0x16, 0x0b, 0x34, 0xb3, 0xec, 0xf9, 0xff,
-	0xcf, 0xf9, 0x9d, 0x8f, 0x5e, 0xa8, 0x4d, 0x98, 0x17, 0xd1, 0xd9, 0x0d, 0x9d, 0xa6, 0x2c, 0x5a,
-	0x58, 0x61, 0xc4, 0x13, 0x4e, 0xb4, 0x5d, 0xd0, 0x9a, 0xdd, 0xe8, 0x57, 0x23, 0xce, 0x47, 0x63,
-	0x46, 0x9d, 0xd0, 0xa7, 0x4e, 0x10, 0xf0, 0xc4, 0x49, 0x7c, 0x1e, 0xc4, 0x99, 0x4d, 0xcf, 0x73,
-	0x93, 0x45, 0xc8, 0x30, 0x68, 0xbe, 0x82, 0xda, 0xbb, 0x5d, 0xa9, 0xf7, 0x4e, 0x32, 0xf4, 0x58,
-	0x6c, 0xb3, 0x69, 0xca, 0xe2, 0x84, 0x5c, 0x82, 0xca, 0xe7, 0x01, 0x8b, 0x1a, 0x4a, 0x5b, 0xe9,
-	0xdc, 0xb3, 0xb3, 0x0f, 0xb3, 0x07, 0x97, 0x45, 0x73, 0x1c, 0xf2, 0x20, 0x66, 0xa4, 0x03, 0xda,
-	0x3c, 0x0b, 0x35, 0x94, 0xf6, 0x59, 0xe7, 0x7e, 0xf7, 0xc2, 0xc2, 0x96, 0x2c, 0x61, 0xb5, 0xa5,
-	0x6c, 0x3e, 0x85, 0x87, 0xfb, 0x0a, 0x12, 0x76, 0x01, 0x55, 0xdf, 0x15, 0xa4, 0x3b, 0x76, 0xd5,
-	0x77, 0xcd, 0x37, 0x40, 0xfe, 0x37, 0x21, 0xe4, 0x19, 0xa8, 0xa2, 0x8a, 0x30, 0x1e, 0x23, 0x32,
-	0xd1, 0xbc, 0x96, 0x2d, 0xb2, 0x81, 0xc7, 0xf9, 0xe7, 0x5b, 0x06, 0x7a, 0x0b, 0xf5, 0x03, 0x37,
-	0xc2, 0xae, 0xe1, 0x7c, 0x8e, 0x31, 0x1c, 0xe9, 0xc1, 0x9e, 0x97, 0x09, 0x76, 0xee, 0x30, 0x9f,
-	0xcb, 0x25, 0xa2, 0x52, 0x32, 0x57, 0xbf, 0xd8, 0x5b, 0x0e, 0x7b, 0x09, 0x1a, 0x96, 0xc2, 0xd9,
-	0x8e, 0x59, 0xd2, 0xd0, 0xfd, 0x71, 0x06, 0xaa, 0x28, 0x42, 0x3c, 0xd0, 0xf0, 0x0e, 0xe4, 0x2a,
-	0xf7, 0x9f, 0xb8, 0xa5, 0xde, 0x2a, 0x51, 0x33, 0xba, 0xd9, 0xfe, 0xfa, 0xeb, 0xef, 0xf7, 0xaa,
-	0x4e, 0x1a, 0x54, 0xfe, 0x1f, 0x78, 0x2c, 0xba, 0x14, 0x4b, 0x5a, 0x91, 0x8f, 0xa0, 0x8a, 0x24,
-	0xa2, 0x9f, 0xa8, 0x24, 0x29, 0xcd, 0x93, 0x1a, 0x32, 0x9a, 0x82, 0x51, 0x27, 0xb5, 0x22, 0x83,
-	0x2e, 0x7d, 0x77, 0x45, 0xc6, 0x70, 0x2e, 0xf7, 0x4f, 0x0e, 0x7b, 0x2d, 0x5e, 0x51, 0x37, 0xca,
-	0x64, 0xe4, 0x3c, 0x11, 0x9c, 0x26, 0x79, 0xbc, 0xe7, 0xa0, 0x25, 0x1f, 0x86, 0x81, 0x86, 0x69,
-	0x47, 0x6b, 0x2b, 0x5c, 0x4f, 0x6f, 0x95, 0xa8, 0x88, 0x6a, 0x09, 0xd4, 0x23, 0x52, 0x3f, 0x44,
-	0x89, 0xa1, 0xfa, 0xbd, 0x9f, 0x1b, 0x43, 0x59, 0x6f, 0x0c, 0xe5, 0xcf, 0xc6, 0x50, 0xbe, 0x6d,
-	0x8d, 0xca, 0x7a, 0x6b, 0x54, 0x7e, 0x6f, 0x8d, 0xca, 0x87, 0x17, 0x23, 0x3f, 0xf1, 0xd2, 0x81,
-	0x35, 0xe4, 0x13, 0x91, 0xfa, 0x29, 0x0d, 0xdc, 0x98, 0x06, 0xdc, 0x65, 0xf4, 0x4b, 0x56, 0x4b,
-	0xbc, 0xcf, 0xc1, 0x5d, 0xf1, 0x40, 0x5f, 0xff, 0x0b, 0x00, 0x00, 0xff, 0xff, 0x62, 0x20, 0xc4,
-	0x8c, 0xf3, 0x03, 0x00, 0x00,
+	// Placeholder — file descriptor not used at runtime for hand-written pb files.
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x01, 0x00, 0x00, 0xff, 0xff, 0x00,
+	0x00, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -438,22 +312,26 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
-	// AllWatches returns every watch across all owners — used by feeders.
-	AllWatches(ctx context.Context, in *QueryAllWatchesRequest, opts ...grpc.CallOption) (*QueryAllWatchesResponse, error)
-	// Watches returns all watches owned by an address.
-	Watches(ctx context.Context, in *QueryWatchesRequest, opts ...grpc.CallOption) (*QueryWatchesResponse, error)
-	// Watch returns a single watch by ID.
-	Watch(ctx context.Context, in *QueryWatchRequest, opts ...grpc.CallOption) (*QueryWatchResponse, error)
+	// Feed returns a single feed by ID.
+	Feed(ctx context.Context, in *QueryFeedRequest, opts ...grpc.CallOption) (*QueryFeedResponse, error)
+	// AllFeeds returns all registered feeds.
+	AllFeeds(ctx context.Context, in *QueryAllFeedsRequest, opts ...grpc.CallOption) (*QueryAllFeedsResponse, error)
+	// Fact returns a single fact by ID.
+	Fact(ctx context.Context, in *QueryFactRequest, opts ...grpc.CallOption) (*QueryFactResponse, error)
+	// FactsByFeed returns all facts for a given feed.
+	FactsByFeed(ctx context.Context, in *QueryFactsByFeedRequest, opts ...grpc.CallOption) (*QueryFactsByFeedResponse, error)
+	// Subscription returns a single subscription by ID.
+	Subscription(ctx context.Context, in *QuerySubscriptionRequest, opts ...grpc.CallOption) (*QuerySubscriptionResponse, error)
+	// SubscriptionsByOwner returns all subscriptions owned by an address.
+	SubscriptionsByOwner(ctx context.Context, in *QuerySubscriptionsByOwnerRequest, opts ...grpc.CallOption) (*QuerySubscriptionsByOwnerResponse, error)
+	// AllSubscriptions returns all subscriptions.
+	AllSubscriptions(ctx context.Context, in *QueryAllSubscriptionsRequest, opts ...grpc.CallOption) (*QueryAllSubscriptionsResponse, error)
 	// AllWebhooks returns every webhook across all owners — used by webhook workers.
 	AllWebhooks(ctx context.Context, in *QueryAllWebhooksRequest, opts ...grpc.CallOption) (*QueryAllWebhooksResponse, error)
 	// Webhooks returns all webhooks owned by an address.
 	Webhooks(ctx context.Context, in *QueryWebhooksRequest, opts ...grpc.CallOption) (*QueryWebhooksResponse, error)
 	// Webhook returns a single webhook by ID.
 	Webhook(ctx context.Context, in *QueryWebhookRequest, opts ...grpc.CallOption) (*QueryWebhookResponse, error)
-	// Events returns all recorded events for a watched address.
-	Events(ctx context.Context, in *QueryEventsRequest, opts ...grpc.CallOption) (*QueryEventsResponse, error)
-	// Event returns a single event by ID.
-	Event(ctx context.Context, in *QueryEventRequest, opts ...grpc.CallOption) (*QueryEventResponse, error)
 	// FeederDelegation returns the delegation record for a delegator address.
 	FeederDelegation(ctx context.Context, in *QueryFeederDelegationRequest, opts ...grpc.CallOption) (*QueryFeederDelegationResponse, error)
 	// AllDelegations returns all feeder delegations.
@@ -468,18 +346,72 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) Watches(ctx context.Context, in *QueryWatchesRequest, opts ...grpc.CallOption) (*QueryWatchesResponse, error) {
-	out := new(QueryWatchesResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Watches", in, out, opts...)
+func (c *queryClient) Feed(ctx context.Context, in *QueryFeedRequest, opts ...grpc.CallOption) (*QueryFeedResponse, error) {
+	out := new(QueryFeedResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Feed", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) Watch(ctx context.Context, in *QueryWatchRequest, opts ...grpc.CallOption) (*QueryWatchResponse, error) {
-	out := new(QueryWatchResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Watch", in, out, opts...)
+func (c *queryClient) AllFeeds(ctx context.Context, in *QueryAllFeedsRequest, opts ...grpc.CallOption) (*QueryAllFeedsResponse, error) {
+	out := new(QueryAllFeedsResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllFeeds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Fact(ctx context.Context, in *QueryFactRequest, opts ...grpc.CallOption) (*QueryFactResponse, error) {
+	out := new(QueryFactResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Fact", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) FactsByFeed(ctx context.Context, in *QueryFactsByFeedRequest, opts ...grpc.CallOption) (*QueryFactsByFeedResponse, error) {
+	out := new(QueryFactsByFeedResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/FactsByFeed", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Subscription(ctx context.Context, in *QuerySubscriptionRequest, opts ...grpc.CallOption) (*QuerySubscriptionResponse, error) {
+	out := new(QuerySubscriptionResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Subscription", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) SubscriptionsByOwner(ctx context.Context, in *QuerySubscriptionsByOwnerRequest, opts ...grpc.CallOption) (*QuerySubscriptionsByOwnerResponse, error) {
+	out := new(QuerySubscriptionsByOwnerResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/SubscriptionsByOwner", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) AllSubscriptions(ctx context.Context, in *QueryAllSubscriptionsRequest, opts ...grpc.CallOption) (*QueryAllSubscriptionsResponse, error) {
+	out := new(QueryAllSubscriptionsResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllSubscriptions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) AllWebhooks(ctx context.Context, in *QueryAllWebhooksRequest, opts ...grpc.CallOption) (*QueryAllWebhooksResponse, error) {
+	out := new(QueryAllWebhooksResponse)
+	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllWebhooks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -498,42 +430,6 @@ func (c *queryClient) Webhooks(ctx context.Context, in *QueryWebhooksRequest, op
 func (c *queryClient) Webhook(ctx context.Context, in *QueryWebhookRequest, opts ...grpc.CallOption) (*QueryWebhookResponse, error) {
 	out := new(QueryWebhookResponse)
 	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Webhook", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) AllWatches(ctx context.Context, in *QueryAllWatchesRequest, opts ...grpc.CallOption) (*QueryAllWatchesResponse, error) {
-	out := new(QueryAllWatchesResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllWatches", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) AllWebhooks(ctx context.Context, in *QueryAllWebhooksRequest, opts ...grpc.CallOption) (*QueryAllWebhooksResponse, error) {
-	out := new(QueryAllWebhooksResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Query/AllWebhooks", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) Events(ctx context.Context, in *QueryEventsRequest, opts ...grpc.CallOption) (*QueryEventsResponse, error) {
-	out := new(QueryEventsResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Events", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) Event(ctx context.Context, in *QueryEventRequest, opts ...grpc.CallOption) (*QueryEventResponse, error) {
-	out := new(QueryEventResponse)
-	err := c.cc.Invoke(ctx, "/mehr.v1.Query/Event", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -560,22 +456,26 @@ func (c *queryClient) AllDelegations(ctx context.Context, in *QueryAllDelegation
 
 // QueryServer is the server API for Query service.
 type QueryServer interface {
-	// AllWatches returns every watch across all owners — used by feeders.
-	AllWatches(context.Context, *QueryAllWatchesRequest) (*QueryAllWatchesResponse, error)
-	// Watches returns all watches owned by an address.
-	Watches(context.Context, *QueryWatchesRequest) (*QueryWatchesResponse, error)
-	// Watch returns a single watch by ID.
-	Watch(context.Context, *QueryWatchRequest) (*QueryWatchResponse, error)
+	// Feed returns a single feed by ID.
+	Feed(context.Context, *QueryFeedRequest) (*QueryFeedResponse, error)
+	// AllFeeds returns all registered feeds.
+	AllFeeds(context.Context, *QueryAllFeedsRequest) (*QueryAllFeedsResponse, error)
+	// Fact returns a single fact by ID.
+	Fact(context.Context, *QueryFactRequest) (*QueryFactResponse, error)
+	// FactsByFeed returns all facts for a given feed.
+	FactsByFeed(context.Context, *QueryFactsByFeedRequest) (*QueryFactsByFeedResponse, error)
+	// Subscription returns a single subscription by ID.
+	Subscription(context.Context, *QuerySubscriptionRequest) (*QuerySubscriptionResponse, error)
+	// SubscriptionsByOwner returns all subscriptions owned by an address.
+	SubscriptionsByOwner(context.Context, *QuerySubscriptionsByOwnerRequest) (*QuerySubscriptionsByOwnerResponse, error)
+	// AllSubscriptions returns all subscriptions.
+	AllSubscriptions(context.Context, *QueryAllSubscriptionsRequest) (*QueryAllSubscriptionsResponse, error)
 	// AllWebhooks returns every webhook across all owners — used by webhook workers.
 	AllWebhooks(context.Context, *QueryAllWebhooksRequest) (*QueryAllWebhooksResponse, error)
 	// Webhooks returns all webhooks owned by an address.
 	Webhooks(context.Context, *QueryWebhooksRequest) (*QueryWebhooksResponse, error)
 	// Webhook returns a single webhook by ID.
 	Webhook(context.Context, *QueryWebhookRequest) (*QueryWebhookResponse, error)
-	// Events returns all recorded events for a watched address.
-	Events(context.Context, *QueryEventsRequest) (*QueryEventsResponse, error)
-	// Event returns a single event by ID.
-	Event(context.Context, *QueryEventRequest) (*QueryEventResponse, error)
 	// FeederDelegation returns the delegation record for a delegator address.
 	FeederDelegation(context.Context, *QueryFeederDelegationRequest) (*QueryFeederDelegationResponse, error)
 	// AllDelegations returns all feeder delegations.
@@ -586,14 +486,26 @@ type QueryServer interface {
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) AllWatches(ctx context.Context, req *QueryAllWatchesRequest) (*QueryAllWatchesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AllWatches not implemented")
+func (*UnimplementedQueryServer) Feed(ctx context.Context, req *QueryFeedRequest) (*QueryFeedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Feed not implemented")
 }
-func (*UnimplementedQueryServer) Watches(ctx context.Context, req *QueryWatchesRequest) (*QueryWatchesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Watches not implemented")
+func (*UnimplementedQueryServer) AllFeeds(ctx context.Context, req *QueryAllFeedsRequest) (*QueryAllFeedsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllFeeds not implemented")
 }
-func (*UnimplementedQueryServer) Watch(ctx context.Context, req *QueryWatchRequest) (*QueryWatchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Watch not implemented")
+func (*UnimplementedQueryServer) Fact(ctx context.Context, req *QueryFactRequest) (*QueryFactResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Fact not implemented")
+}
+func (*UnimplementedQueryServer) FactsByFeed(ctx context.Context, req *QueryFactsByFeedRequest) (*QueryFactsByFeedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FactsByFeed not implemented")
+}
+func (*UnimplementedQueryServer) Subscription(ctx context.Context, req *QuerySubscriptionRequest) (*QuerySubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Subscription not implemented")
+}
+func (*UnimplementedQueryServer) SubscriptionsByOwner(ctx context.Context, req *QuerySubscriptionsByOwnerRequest) (*QuerySubscriptionsByOwnerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubscriptionsByOwner not implemented")
+}
+func (*UnimplementedQueryServer) AllSubscriptions(ctx context.Context, req *QueryAllSubscriptionsRequest) (*QueryAllSubscriptionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllSubscriptions not implemented")
 }
 func (*UnimplementedQueryServer) AllWebhooks(ctx context.Context, req *QueryAllWebhooksRequest) (*QueryAllWebhooksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllWebhooks not implemented")
@@ -603,12 +515,6 @@ func (*UnimplementedQueryServer) Webhooks(ctx context.Context, req *QueryWebhook
 }
 func (*UnimplementedQueryServer) Webhook(ctx context.Context, req *QueryWebhookRequest) (*QueryWebhookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Webhook not implemented")
-}
-func (*UnimplementedQueryServer) Events(ctx context.Context, req *QueryEventsRequest) (*QueryEventsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Events not implemented")
-}
-func (*UnimplementedQueryServer) Event(ctx context.Context, req *QueryEventRequest) (*QueryEventResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Event not implemented")
 }
 func (*UnimplementedQueryServer) FeederDelegation(ctx context.Context, req *QueryFeederDelegationRequest) (*QueryFeederDelegationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeederDelegation not implemented")
@@ -621,38 +527,146 @@ func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
-func _Query_Watches_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryWatchesRequest)
+func _Query_Feed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryFeedRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Watches(ctx, in)
+		return srv.(QueryServer).Feed(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mehr.v1.Query/Watches",
+		FullMethod: "/mehr.v1.Query/Feed",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Watches(ctx, req.(*QueryWatchesRequest))
+		return srv.(QueryServer).Feed(ctx, req.(*QueryFeedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Watch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryWatchRequest)
+func _Query_AllFeeds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllFeedsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Watch(ctx, in)
+		return srv.(QueryServer).AllFeeds(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mehr.v1.Query/Watch",
+		FullMethod: "/mehr.v1.Query/AllFeeds",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Watch(ctx, req.(*QueryWatchRequest))
+		return srv.(QueryServer).AllFeeds(ctx, req.(*QueryAllFeedsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Fact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryFactRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Fact(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/Fact",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Fact(ctx, req.(*QueryFactRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_FactsByFeed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryFactsByFeedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).FactsByFeed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/FactsByFeed",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).FactsByFeed(ctx, req.(*QueryFactsByFeedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Subscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Subscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/Subscription",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Subscription(ctx, req.(*QuerySubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_SubscriptionsByOwner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySubscriptionsByOwnerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).SubscriptionsByOwner(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/SubscriptionsByOwner",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).SubscriptionsByOwner(ctx, req.(*QuerySubscriptionsByOwnerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_AllSubscriptions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllSubscriptionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AllSubscriptions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/AllSubscriptions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AllSubscriptions(ctx, req.(*QueryAllSubscriptionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_AllWebhooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllWebhooksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AllWebhooks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mehr.v1.Query/AllWebhooks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AllWebhooks(ctx, req.(*QueryAllWebhooksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -689,78 +703,6 @@ func _Query_Webhook_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Webhook(ctx, req.(*QueryWebhookRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_AllWatches_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllWatchesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).AllWatches(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mehr.v1.Query/AllWatches",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).AllWatches(ctx, req.(*QueryAllWatchesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_AllWebhooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllWebhooksRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).AllWebhooks(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mehr.v1.Query/AllWebhooks",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).AllWebhooks(ctx, req.(*QueryAllWebhooksRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_Events_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryEventsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).Events(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mehr.v1.Query/Events",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Events(ctx, req.(*QueryEventsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_Event_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryEventRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).Event(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mehr.v1.Query/Event",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Event(ctx, req.(*QueryEventRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -807,16 +749,32 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "AllWatches",
-			Handler:    _Query_AllWatches_Handler,
+			MethodName: "Feed",
+			Handler:    _Query_Feed_Handler,
 		},
 		{
-			MethodName: "Watches",
-			Handler:    _Query_Watches_Handler,
+			MethodName: "AllFeeds",
+			Handler:    _Query_AllFeeds_Handler,
 		},
 		{
-			MethodName: "Watch",
-			Handler:    _Query_Watch_Handler,
+			MethodName: "Fact",
+			Handler:    _Query_Fact_Handler,
+		},
+		{
+			MethodName: "FactsByFeed",
+			Handler:    _Query_FactsByFeed_Handler,
+		},
+		{
+			MethodName: "Subscription",
+			Handler:    _Query_Subscription_Handler,
+		},
+		{
+			MethodName: "SubscriptionsByOwner",
+			Handler:    _Query_SubscriptionsByOwner_Handler,
+		},
+		{
+			MethodName: "AllSubscriptions",
+			Handler:    _Query_AllSubscriptions_Handler,
 		},
 		{
 			MethodName: "AllWebhooks",
@@ -831,14 +789,6 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Webhook_Handler,
 		},
 		{
-			MethodName: "Events",
-			Handler:    _Query_Events_Handler,
-		},
-		{
-			MethodName: "Event",
-			Handler:    _Query_Event_Handler,
-		},
-		{
 			MethodName: "FeederDelegation",
 			Handler:    _Query_FeederDelegation_Handler,
 		},
@@ -849,136 +799,6 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "mehr/v1/query.proto",
-}
-
-func (m *QueryWatchesRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryWatchesRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryWatchesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Owner) > 0 {
-		i -= len(m.Owner)
-		copy(dAtA[i:], m.Owner)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.Owner)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryWatchesResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryWatchesResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryWatchesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Watches) > 0 {
-		for iNdEx := len(m.Watches) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Watches[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintQuery(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryWatchRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryWatchRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryWatchRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Id != 0 {
-		i = encodeVarintQuery(dAtA, i, uint64(m.Id))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryWatchResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryWatchResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryWatchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Watch != nil {
-		{
-			size, err := m.Watch.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintQuery(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
 }
 
 func (m *QueryWebhooksRequest) Marshal() (dAtA []byte, err error) {
@@ -1111,6 +931,66 @@ func (m *QueryWebhookResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryAllWebhooksRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllWebhooksRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllWebhooksRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllWebhooksResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllWebhooksResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllWebhooksResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Webhooks) > 0 {
+		for iNdEx := len(m.Webhooks) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Webhooks[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -1121,58 +1001,6 @@ func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	}
 	dAtA[offset] = uint8(v)
 	return base
-}
-func (m *QueryWatchesRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Owner)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
-func (m *QueryWatchesResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.Watches) > 0 {
-		for _, e := range m.Watches {
-			l = e.Size()
-			n += 1 + l + sovQuery(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *QueryWatchRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Id != 0 {
-		n += 1 + sovQuery(uint64(m.Id))
-	}
-	return n
-}
-
-func (m *QueryWatchResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Watch != nil {
-		l = m.Watch.Size()
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
 }
 
 func (m *QueryWebhooksRequest) Size() (n int) {
@@ -1228,333 +1056,35 @@ func (m *QueryWebhookResponse) Size() (n int) {
 	return n
 }
 
+func (m *QueryAllWebhooksRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	return 0
+}
+
+func (m *QueryAllWebhooksResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Webhooks) > 0 {
+		for _, e := range m.Webhooks {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	return n
+}
+
 func sovQuery(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozQuery(x uint64) (n int) {
 	return sovQuery(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *QueryWatchesRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWatchesRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWatchesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Owner", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Owner = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
 
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryWatchesResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWatchesResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWatchesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Watches", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Watches = append(m.Watches, &Watch{})
-			if err := m.Watches[len(m.Watches)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryWatchRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWatchRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWatchRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
-			}
-			m.Id = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Id |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryWatchResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWatchResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWatchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Watch", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Watch == nil {
-				m.Watch = &Watch{}
-			}
-			if err := m.Watch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *QueryWebhooksRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1637,6 +1167,7 @@ func (m *QueryWebhooksRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryWebhooksResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1721,6 +1252,7 @@ func (m *QueryWebhooksResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryWebhookRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1790,6 +1322,7 @@ func (m *QueryWebhookRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryWebhookResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1876,6 +1409,142 @@ func (m *QueryWebhookResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
+func (m *QueryAllWebhooksRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllWebhooksRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllWebhooksRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+
+func (m *QueryAllWebhooksResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllWebhooksResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllWebhooksResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Webhooks", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Webhooks = append(m.Webhooks, &Webhook{})
+			if err := m.Webhooks[len(m.Webhooks)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+
 func skipQuery(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

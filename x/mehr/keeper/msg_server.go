@@ -19,29 +19,101 @@ func NewMsgServer(k Keeper) MsgServer {
 	return MsgServer{Keeper: k}
 }
 
-func (m MsgServer) CreateWatch(goCtx context.Context, msg *types.MsgCreateWatch) (*types.MsgCreateWatchResponse, error) {
+func (m MsgServer) RegisterFeed(goCtx context.Context, msg *types.MsgRegisterFeed) (*types.MsgRegisterFeedResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	if msg.Address == "" {
-		return nil, types.ErrInvalidAddress
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
 	}
-	w, err := m.Keeper.CreateWatch(ctx, msg.Creator, msg.Network, msg.Address, msg.Label)
+	if m.Keeper.FeedExists(ctx, msg.Id) {
+		return nil, types.ErrFeedAlreadyExists
+	}
+	f := &types.Feed{
+		Id:          msg.Id,
+		Name:        msg.Name,
+		Description: msg.Description,
+		SourceType:  msg.SourceType,
+		PayloadType: msg.PayloadType,
+		CreatedBy:   msg.Creator,
+	}
+	saved, err := m.Keeper.RegisterFeed(ctx, f)
 	if err != nil {
 		return nil, err
 	}
-	return &types.MsgCreateWatchResponse{Watch: w}, nil
+	return &types.MsgRegisterFeedResponse{Feed: saved}, nil
 }
 
-func (m MsgServer) DeleteWatch(goCtx context.Context, msg *types.MsgDeleteWatch) (*types.MsgDeleteWatchResponse, error) {
+func (m MsgServer) SubmitFact(goCtx context.Context, msg *types.MsgSubmitFact) (*types.MsgSubmitFactResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	w, ok := m.Keeper.GetWatch(ctx, msg.WatchId)
-	if !ok {
-		return nil, types.ErrWatchNotFound
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
 	}
-	if w.Owner != msg.Creator {
+
+	// Feeder must be delegated by someone (or be self-delegated).
+	delegator := m.Keeper.GetDelegatorForFeeder(ctx, msg.Feeder)
+	if delegator == "" {
+		if _, ok := m.Keeper.GetDelegation(ctx, msg.Feeder); !ok {
+			return nil, types.ErrUnauthorizedFeeder
+		}
+	}
+
+	if !m.Keeper.FeedExists(ctx, msg.FeedId) {
+		return nil, types.ErrFeedNotFound
+	}
+
+	if m.Keeper.IsDuplicateFact(ctx, msg.FeedId, msg.DeduplicationKey) {
+		return nil, types.ErrDuplicateFact
+	}
+
+	f := &types.Fact{
+		FeedId:           msg.FeedId,
+		Feeder:           msg.Feeder,
+		Payload:          msg.Payload,
+		DeduplicationKey: msg.DeduplicationKey,
+		SubmittedAt:      ctx.BlockTime().Format(time.RFC3339),
+	}
+
+	saved, err := m.Keeper.CreateFact(ctx, f)
+	if err != nil {
+		return nil, err
+	}
+	return &types.MsgSubmitFactResponse{Fact: saved}, nil
+}
+
+func (m MsgServer) CreateSubscription(goCtx context.Context, msg *types.MsgCreateSubscription) (*types.MsgCreateSubscriptionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+	if !m.Keeper.FeedExists(ctx, msg.FeedId) {
+		return nil, types.ErrFeedNotFound
+	}
+	s := &types.Subscription{
+		FeedId: msg.FeedId,
+		Owner:  msg.Creator,
+		Filter: msg.Filter,
+		Label:  msg.Label,
+	}
+	saved, err := m.Keeper.CreateSubscription(ctx, s)
+	if err != nil {
+		return nil, err
+	}
+	return &types.MsgCreateSubscriptionResponse{Subscription: saved}, nil
+}
+
+func (m MsgServer) DeleteSubscription(goCtx context.Context, msg *types.MsgDeleteSubscription) (*types.MsgDeleteSubscriptionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+	s, ok := m.Keeper.GetSubscription(ctx, msg.SubscriptionId)
+	if !ok {
+		return nil, types.ErrSubscriptionNotFound
+	}
+	if s.Owner != msg.Creator {
 		return nil, types.ErrUnauthorized
 	}
-	m.Keeper.DeleteWatch(ctx, msg.WatchId, msg.Creator)
-	return &types.MsgDeleteWatchResponse{}, nil
+	m.Keeper.DeleteSubscription(ctx, msg.SubscriptionId, msg.Creator)
+	return &types.MsgDeleteSubscriptionResponse{}, nil
 }
 
 func (m MsgServer) CreateWebhook(goCtx context.Context, msg *types.MsgCreateWebhook) (*types.MsgCreateWebhookResponse, error) {
@@ -90,55 +162,4 @@ func (m MsgServer) RevokeDelegation(goCtx context.Context, msg *types.MsgRevokeD
 	}
 	m.Keeper.RevokeDelegation(ctx, msg.Delegator)
 	return &types.MsgRevokeDelegationResponse{}, nil
-}
-
-func (m MsgServer) SubmitEvent(goCtx context.Context, msg *types.MsgSubmitEvent) (*types.MsgSubmitEventResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if err := msg.ValidateBasic(); err != nil {
-		return nil, err
-	}
-
-	// Feeder must be delegated by someone (or be self-delegated).
-	// Self-delegation: delegator == feeder. External: reverse index maps feeder → delegator.
-	delegator := m.Keeper.GetDelegatorForFeeder(ctx, msg.Feeder)
-	if delegator == "" {
-		// Check if feeder is a self-delegator (delegated themselves).
-		if _, ok := m.Keeper.GetDelegation(ctx, msg.Feeder); !ok {
-			return nil, types.ErrUnauthorizedFeeder
-		}
-	}
-
-	watch := m.Keeper.FindWatchForAddress(ctx, msg.Network, msg.Address)
-	if watch == nil {
-		return nil, types.ErrWatchNotActive
-	}
-
-	if m.Keeper.IsDuplicateEvent(ctx, msg.Network, msg.TxHash, msg.LogIndex) {
-		return nil, types.ErrDuplicateEvent
-	}
-
-	e := &types.Event{
-		Feeder:      msg.Feeder,
-		WatchId:     watch.Id,
-		Network:     msg.Network,
-		Address:     msg.Address,
-		TxHash:      msg.TxHash,
-		BlockNumber: msg.BlockNumber,
-		LogIndex:    msg.LogIndex,
-		Asset:       msg.Asset,
-		Contract:    msg.Contract,
-		FromAddress: msg.FromAddress,
-		AmountRaw:   msg.AmountRaw,
-		Decimals:    msg.Decimals,
-		Metadata:    msg.Metadata,
-		SubmittedAt: ctx.BlockTime().Format(time.RFC3339),
-	}
-
-	saved, err := m.Keeper.CreateEvent(ctx, e)
-	if err != nil {
-		return nil, err
-	}
-
-	return &types.MsgSubmitEventResponse{Event: saved}, nil
 }
